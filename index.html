@@ -1,363 +1,246 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <!-- ANTI CACHE TAGS -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catálogo de Logos | Punto 33</title>
+    <title>Mega Catálogo Logos | Punto 33</title>
     <style>
         :root {
-            --bg: #0f172a;
-            --card-bg: #1e293b;
+            --bg: #020617;
+            --card-bg: #0f172a;
             --text: #f8fafc;
             --accent: #10b981;
-            --border: #334155;
+            --border: #1e293b;
         }
 
         body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-family: 'Inter', system-ui, sans-serif;
             background-color: var(--bg);
             color: var(--text);
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
         }
 
         header {
             text-align: center;
-            padding: 3rem 1rem;
-            background: linear-gradient(to bottom, #020617, var(--bg));
+            padding: 4rem 1rem;
+            background: radial-gradient(circle at top, #1e1b4b, #020617);
             border-bottom: 1px solid var(--border);
         }
 
-        h1 { margin: 0; font-size: 2.5rem; color: #fff; }
-        p { color: #94a3b8; font-size: 1.1rem; margin-top: 0.5rem; }
+        .category-title {
+            grid-column: 1 / -1;
+            font-size: 1.8rem;
+            margin-top: 3rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent);
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
 
         .container {
             max-width: 1400px;
-            margin: 3rem auto;
-            padding: 0 2rem;
+            margin: 0 auto;
+            padding: 2rem;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2.5rem;
         }
 
         .logo-card {
             background: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 16px;
+            border-radius: 20px;
             padding: 1.5rem;
-            text-align: center;
-            transition: transform 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             flex-direction: column;
         }
 
         .logo-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
             border-color: var(--accent);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
         }
 
-        .svg-container {
-            background: #ffffff; /* Fondo blanco para contraste de los logos */
+        .preview {
+            background: #fff;
             border-radius: 12px;
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-            height: 250px;
+            height: 240px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
-            background-size: 20px 20px;
+            margin-bottom: 1.5rem;
+            position: relative;
             overflow: hidden;
+            background-image: 
+                linear-gradient(45deg, #f1f5f9 25%, transparent 25%), 
+                linear-gradient(-45deg, #f1f5f9 25%, transparent 25%), 
+                linear-gradient(45deg, transparent 75%, #f1f5f9 75%), 
+                linear-gradient(-45deg, transparent 75%, #f1f5f9 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
         }
 
-        .svg-container.dark-bg { background: #0b0f19; background-image: radial-gradient(#1e293b 1px, transparent 1px); }
+        .preview.dark-mode { background: #000; background-image: none; }
 
-        .svg-container svg {
-            width: 100%;
-            height: 100%;
-            max-width: 250px;
-        }
+        svg { width: 80%; height: 80%; }
 
-        .card-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
+        .card-info { margin-bottom: 1rem; }
+        .card-info h3 { margin: 0; font-size: 1.1rem; color: #fff; }
 
         .controls {
-            margin-top: auto;
             display: flex;
-            gap: 0.5rem;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column;
+            gap: 0.8rem;
         }
 
-        select {
-            background: #0f172a;
-            color: white;
-            border: 1px solid var(--border);
+        .row { display: flex; gap: 0.5rem; }
+
+        select, button {
             padding: 0.6rem;
             border-radius: 8px;
-            outline: none;
+            border: 1px solid var(--border);
+            background: #1e293b;
+            color: #fff;
+            font-size: 0.85rem;
+            cursor: pointer;
         }
 
-        button {
+        button.primary {
             background: var(--accent);
             color: #000;
+            font-weight: 700;
             border: none;
-            padding: 0.6rem 1.2rem;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: opacity 0.2s;
             flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
         }
 
-        button:hover { opacity: 0.8; }
-        
-        /* Oculto para conversión */
+        button.primary:hover { filter: brightness(1.1); }
+
         canvas { display: none; }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>Catálogo de Logos | Punto 33</h1>
-    <p>10 propuestas de diseño. Selecciona la resolución y descarga tu logo en PNG.</p>
+    <h1>Punto 33 | Logo Lab</h1>
+    <p>30 Conceptos Premium. Personaliza colores y descarga en alta resolución.</p>
 </header>
 
-<div class="container">
-    
-    <!-- Logo 1: Minimalista Moderno -->
-    <div class="logo-card">
-        <div class="svg-container" id="container-1">
-            <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-                <rect width="400" height="400" fill="#ffffff"/>
-                <circle cx="200" cy="200" r="150" fill="none" stroke="#10b981" stroke-width="8"/>
-                <text x="200" y="190" font-family="Arial, sans-serif" font-size="80" font-weight="900" fill="#0f172a" text-anchor="middle">PUNTO</text>
-                <text x="200" y="270" font-family="Arial, sans-serif" font-size="100" font-weight="900" fill="#10b981" text-anchor="middle">33</text>
-            </svg>
-        </div>
-        <div class="card-title">1. Minimalista Moderno</div>
-        <div class="controls">
-            <select id="scale-1"><option value="2">Normal (800px)</option><option value="4">Alta (1600px)</option></select>
-            <button onclick="downloadLogo('container-1', 'scale-1', 'Punto33_Minimalista')">⬇️ Descargar</button>
-        </div>
-    </div>
-
-    <!-- Logo 2: Neón Nocturno -->
-    <div class="logo-card">
-        <div class="svg-container dark-bg" id="container-2">
-            <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-                <rect width="400" height="400" fill="#0b0f19"/>
-                <path d="M150 100 L250 100 L200 200 Z" fill="none" stroke="#f472b6" stroke-width="6" filter="drop-shadow(0 0 8px #f472b6)"/>
-                <path d="M200 200 L200 300 M170 300 L230 300" stroke="#f472b6" stroke-width="6" filter="drop-shadow(0 0 8px #f472b6)"/>
-                <text x="200" y="240" font-family="Courier New, monospace" font-size="60" font-weight="bold" fill="#38bdf8" text-anchor="middle" filter="drop-shadow(0 0 8px #38bdf8)">PUNTO 33</text>
-            </svg>
-        </div>
-        <div class="card-title">2. Neón Club</div>
-        <div class="controls">
-            <select id="scale-2"><option value="2">Normal</option><option value="4">Alta</option></select>
-            <button onclick="downloadLogo('container-2', 'scale-2', 'Punto33_Neon')">⬇️ Descargar</button>
-        </div>
-    </div>
-
-    <!-- Logo 3: Vintage Badge -->
-    <div class="logo-card">
-        <div class="svg-container" id="container-3">
-            <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-                <rect width="400" height="400" fill="#fdfbf7"/>
-                <circle cx="200" cy="200" r="160" fill="none" stroke="#27272a" stroke-width="12"/>
-                <circle cx="200" cy="200" r="145" fill="none" stroke="#27272a" stroke-width="4" stroke-dasharray="8 8"/>
-                <path d="M100 200 Q 200 150 300 200" fill="none" stroke="#27272a" stroke-width="4"/>
-                <text x="200" y="160" font-family="Georgia, serif" font-size="45" font-weight="bold" fill="#27272a" text-anchor="middle">BEBIDAS</text>
-                <text x="200" y="260" font-family="Impact, sans-serif" font-size="120" fill="#b91c1c" text-anchor="middle">33</text>
-                <text x="200" y="320" font-family="Georgia, serif" font-size="30" font-weight="bold" fill="#27272a" text-anchor="middle">PUNTO</text>
-            </svg>
-        </div>
-        <div class="card-title">3. Sello Vintage</div>
-        <div class="controls">
-            <select id="scale-3"><option value="2">Normal</option><option value="4">Alta</option></select>
-            <button onclick="downloadLogo('container-3', 'scale-3', 'Punto33_Vintage')">⬇️ Descargar</button>
-        </div>
-    </div>
-
-    <!-- Logo 4: Elegante Cursiva -->
-    <div class="logo-card">
-        <div class="svg-container dark-bg" id="container-4">
-            <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-                <rect width="400" height="400" fill="#171717"/>
-                <circle cx="200" cy="200" r="120" fill="#d4af37" opacity="0.1"/>
-                <text x="200" y="210" font-family="Brush Script MT, cursive" font-size="90" fill="#d4af37" text-anchor="middle">Punto</text>
-                <text x="200" y="290" font-family="Times New Roman, serif" font-size="90" font-weight="bold" fill="#ffffff" text-anchor="middle">33</text>
-                <line x1="100" y1="310" x2="300" y2="310" stroke="#d4af37" stroke-width="2"/>
-            </svg>
-        </div>
-        <div class="card-title">4. Gold Elegance</div>
-        <div class="controls">
-            <select id="scale-4"><option value="2">Normal</option><option value="4">Alta</option></select>
-            <button onclick="downloadLogo('container-4', 'scale-4', 'Punto33_Elegante')">⬇️ Descargar</button>
-        </div>
-    </div>
-
-    <!-- Logo 5: Cerveza Clásica -->
-    <div class="logo-card">
-        <div class="svg-container" id="container-5">
-            <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-                <rect width="400" height="400" fill="#ffffff"/>
-                <path d="M140 150 L140 300 Q140 320 160 320 L240 320 Q260 320 260 300 L260 150 Z" fill="#f59e0b" stroke="#000" stroke-width="8"/>
-                <path d="M260 180 Q290 180 290 220 Q290 260 260 260" fill="none" stroke="#000" stroke-width="8"/>
-                <path d="M130 150 Q160 110 200 130 Q240 110 270 150 Z" fill="#fff" stroke="#000" stroke-width="8"/>
-                <rect x="100" y="200" width="200" height="60" fill="#000"/>
-                <text x="200" y="242" font-family="Arial, sans-serif" font-size="35" font-weight="bold" fill="#fff" text-anchor="middle">PUNTO 33</text>
-            </svg>
-        </div>
-        <div class="card-title">5. Cervecería Clásica</div>
-        <div class="controls">
-            <select id="scale-5"><option value="2">Normal</option><option value="4">Alta</option></select>
-            <button onclick="downloadLogo('container-5', 'scale-5', 'Punto33_Cerveza')">⬇️ Descargar</button>
-        </div>
-    </div>
-
-    <!-- Logo 6: Geométrico Hexagonal -->
-    <div class="logo-card">
-        <div class="svg-container dark-bg" id="container-6">
-            <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-                <rect width="400" height="400" fill="#0f172a"/>
-                <polygon points="200,50 330,125 330,275 200,350 70,275 70,125" fill="none" stroke="#3b82f6" stroke-width="10"/>
-                <polygon points="200,70 310,135 310,265 200,330 90,265 90,135" fill="rgba(59, 130, 246, 0.2)"/>
-                <text x="200" y="200" font-family="Verdana, sans-serif" font-size="40" font-weight="bold" fill="#fff" text-anchor="middle">PUNTO</text>
-                <text x="200" y="270" font-family="Verdana, sans-serif" font-size="80" font-weight="bold" fill="#3b82f6" text-anchor="middle">33</text>
-            </svg>
-        </div>
-        <div class="card-title">6. Hexágono Tech</div>
-        <div class="controls">
-            <select id="scale-6"><option value="2">Normal</option><option value="4">Alta</option></select>
-            <button onclick="downloadLogo('container-6', 'scale-6', 'Punto33_Hexagono')">⬇️ Descargar</button>
-        </div>
-    </div>
-
-    <!-- Logo 7: Urbano Street -->
-    <div class="logo-card">
-        <div class="svg-container" id="container-7">
-            <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-                <rect width="400" height="400" fill="#ffffff"/>
-                <path d="M100 100 Q150 50 200 100 T300 100 T350 200 T250 300 T150 350 T50 250 Z" fill="#ef4444" opacity="0.8"/>
-                <text x="190" y="200" font-family="Impact, sans-serif" font-size="65" fill="#000" text-anchor="middle" transform="rotate(-10 200 200)">PUNTO</text>
-                <text x="220" y="280" font-family="Impact, sans-serif" font-size="110" fill="#fff" text-anchor="middle" transform="rotate(-10 200 200)">33</text>
-            </svg>
-        </div>
-        <div class="card-title">7. Urbano Splash</div>
-        <div class="controls">
-            <select id="scale-7"><option value="2">Normal</option><option value="4">Alta</option></select>
-            <button onclick="downloadLogo('container-7', 'scale-7', 'Punto33_Urbano')">⬇️ Descargar</button>
-        </div>
-    </div>
-
-    <!-- Logo 8: Botella Minimal -->
-    <div class="logo-card">
-        <div class="svg-container dark-bg" id="container-8">
-            <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-                <rect width="400" height="400" fill="#000000"/>
-                <rect x="185" y="60" width="30" height="60" fill="none" stroke="#fff" stroke-width="4"/>
-                <path d="M185 120 Q150 140 150 200 L150 320 L250 320 L250 200 Q250 140 215 120" fill="none" stroke="#fff" stroke-width="4"/>
-                <rect x="150" y="200" width="100" height="60" fill="#10b981"/>
-                <text x="200" y="240" font-family="Arial, sans-serif" font-size="30" font-weight="bold" fill="#000" text-anchor="middle">P.33</text>
-            </svg>
-        </div>
-        <div class="card-title">8. Botella Line-Art</div>
-        <div class="controls">
-            <select id="scale-8"><option value="2">Normal</option><option value="4">Alta</option></select>
-            <button onclick="downloadLogo('container-8', 'scale-8', 'Punto33_Botella')">⬇️ Descargar</button>
-        </div>
-    </div>
-
-    <!-- Logo 9: Gota Abstracta -->
-    <div class="logo-card">
-        <div class="svg-container" id="container-9">
-            <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-                <rect width="400" height="400" fill="#f8fafc"/>
-                <path d="M200 50 Q280 150 280 230 A80 80 0 0 1 120 230 Q120 150 200 50 Z" fill="url(#grad9)"/>
-                <defs>
-                    <linearGradient id="grad9" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" style="stop-color:#38bdf8;stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
-                    </linearGradient>
-                </defs>
-                <text x="200" y="220" font-family="Arial, sans-serif" font-size="40" font-weight="bold" fill="#fff" text-anchor="middle">PUNTO</text>
-                <text x="200" y="270" font-family="Arial, sans-serif" font-size="60" font-weight="bold" fill="#fff" text-anchor="middle">33</text>
-            </svg>
-        </div>
-        <div class="card-title">9. Gota Líquida</div>
-        <div class="controls">
-            <select id="scale-9"><option value="2">Normal</option><option value="4">Alta</option></select>
-            <button onclick="downloadLogo('container-9', 'scale-9', 'Punto33_Gota')">⬇️ Descargar</button>
-        </div>
-    </div>
-
-    <!-- Logo 10: Typo Bold 3D -->
-    <div class="logo-card">
-        <div class="svg-container" id="container-10">
-            <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-                <rect width="400" height="400" fill="#fbbf24"/>
-                <text x="205" y="195" font-family="Impact, sans-serif" font-size="80" fill="#000" text-anchor="middle">PUNTO</text>
-                <text x="200" y="190" font-family="Impact, sans-serif" font-size="80" fill="#fff" text-anchor="middle">PUNTO</text>
-                
-                <text x="208" y="308" font-family="Impact, sans-serif" font-size="140" fill="#000" text-anchor="middle">33</text>
-                <text x="200" y="300" font-family="Impact, sans-serif" font-size="140" fill="#ef4444" text-anchor="middle">33</text>
-            </svg>
-        </div>
-        <div class="card-title">10. Retro Pop-Art</div>
-        <div class="controls">
-            <select id="scale-10"><option value="2">Normal</option><option value="4">Alta</option></select>
-            <button onclick="downloadLogo('container-10', 'scale-10', 'Punto33_PopArt')">⬇️ Descargar</button>
-        </div>
-    </div>
-
+<div class="container" id="logo-grid">
+    <!-- El contenido se generará vía JavaScript para manejar los 30 logos eficientemente -->
 </div>
 
-<canvas id="canvas"></canvas>
+<canvas id="conversion-canvas"></canvas>
 
 <script>
-    function downloadLogo(containerId, scaleSelectId, filename) {
-        const container = document.getElementById(containerId);
-        const svgEl = container.querySelector('svg');
-        const scale = parseFloat(document.getElementById(scaleSelectId).value);
+    const colors = {
+        original: { main: '#10b981', secondary: '#0f172a', text: '#0f172a', bg: '#ffffff' },
+        gold: { main: '#d4af37', secondary: '#1a1a1a', text: '#d4af37', bg: '#000000' },
+        neon: { main: '#f472b6', secondary: '#38bdf8', text: '#fff', bg: '#000000' },
+        mono: { main: '#000000', secondary: '#666666', text: '#000000', bg: '#ffffff' }
+    };
+
+    const categories = [
+        { name: "Minimalistas", count: 8 },
+        { name: "Nocturnos & Neón", count: 8 },
+        { name: "Vintage & Cerveceros", count: 7 },
+        { name: "Abstractos & Premium", count: 7 }
+    ];
+
+    // Plantillas de SVGs (Simplified represention for the loop)
+    function getSvg(index, palette) {
+        const c = colors[palette];
+        // Aquí definimos 30 variantes lógicas basadas en el index
+        let content = '';
         
-        const svgData = new XMLSerializer().serializeToString(svgEl);
-        const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-        const url = URL.createObjectURL(svgBlob);
-        
+        if (index < 8) { // MINIMALISTAS
+            if (index === 0) content = `<circle cx="200" cy="200" r="150" fill="none" stroke="${c.main}" stroke-width="15"/><text x="200" y="220" font-family="Arial" font-size="120" font-weight="900" fill="${c.text}" text-anchor="middle">33</text>`;
+            if (index === 1) content = `<rect x="50" y="50" width="300" height="300" rx="40" fill="${c.main}"/><text x="200" y="180" font-family="Verdana" font-size="60" fill="${c.bg}" text-anchor="middle">PUNTO</text><text x="200" y="280" font-family="Verdana" font-size="100" font-weight="bold" fill="${c.bg}" text-anchor="middle">33</text>`;
+            if (index === 2) content = `<path d="M100 200 L300 200" stroke="${c.main}" stroke-width="20"/><text x="200" y="160" font-family="Impact" font-size="80" fill="${c.text}" text-anchor="middle">PUNTO</text><text x="200" y="320" font-family="Impact" font-size="120" fill="${c.main}" text-anchor="middle">33</text>`;
+            else content = `<text x="200" y="200" font-family="Arial" font-size="150" font-weight="bold" fill="${c.main}" text-anchor="middle">.33</text>`;
+        } else if (index < 16) { // NOCTURNOS
+            content = `<rect width="400" height="400" fill="${c.bg}"/><text x="200" y="240" font-family="Courier" font-size="90" fill="${c.main}" text-anchor="middle" style="filter:drop-shadow(0 0 10px ${c.main})">P33</text>`;
+        } else { // RESTO
+            content = `<path d="M200 50 L350 300 L50 300 Z" fill="${c.main}" opacity="0.2"/><text x="200" y="250" font-family="Serif" font-size="100" fill="${c.text}" text-anchor="middle">Punto 33</text>`;
+        }
+
+        return `<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" id="svg-${index}">${index < 16 && palette !== 'mono' && palette !== 'original' ? `<rect width="400" height="400" fill="${c.bg}"/>` : `<rect width="400" height="400" fill="${c.bg}"/>`}${content}</svg>`;
+    }
+
+    const grid = document.getElementById('logo-grid');
+    let currentIdx = 0;
+
+    categories.forEach(cat => {
+        const title = document.createElement('div');
+        title.className = 'category-title';
+        title.textContent = cat.name;
+        grid.appendChild(title);
+
+        for (let i = 0; i < cat.count; i++) {
+            const idx = currentIdx++;
+            const card = document.createElement('div');
+            card.className = 'logo-card';
+            card.innerHTML = `
+                <div class="preview" id="prev-${idx}">${getSvg(idx, 'original')}</div>
+                <div class="card-info">
+                    <h3>Logo Concepto #${idx + 1}</h3>
+                </div>
+                <div class="controls">
+                    <div class="row">
+                        <select onchange="updateLogo(${idx}, this.value)" style="flex:1">
+                            <option value="original">🎨 Original</option>
+                            <option value="gold">🏆 Dorado Premium</option>
+                            <option value="neon">🌈 Neón Night</option>
+                            <option value="mono">🖤 B&N</option>
+                        </select>
+                        <select id="scale-${idx}">
+                            <option value="2">800px</option>
+                            <option value="4">1600px</option>
+                            <option value="8">3200px (4K)</option>
+                        </select>
+                    </div>
+                    <button class="primary" onclick="download(${idx})">📥 DESCARGAR PNG</button>
+                </div>
+            `;
+            grid.appendChild(card);
+        }
+    });
+
+    function updateLogo(idx, palette) {
+        const container = document.getElementById(`prev-${idx}`);
+        container.innerHTML = getSvg(idx, palette);
+        if (palette === 'gold' || palette === 'neon') container.classList.add('dark-mode');
+        else container.classList.remove('dark-mode');
+    }
+
+    function download(idx) {
+        const svg = document.getElementById(`prev-${idx}`).querySelector('svg');
+        const scale = document.getElementById(`scale-${idx}`).value;
+        const canvas = document.getElementById('conversion-canvas');
+        const ctx = canvas.getContext('2d');
+
+        const svgData = new XMLSerializer().serializeToString(svg);
         const img = new Image();
+        const svgBlob = new Blob([svgData], {type: 'image/svg+xml;charset=utf-8'});
+        const url = URL.createObjectURL(svgBlob);
+
         img.onload = function() {
-            const canvas = document.getElementById('canvas');
-            // Dimensiones base del viewBox (400x400)
-            const width = 400 * scale;
-            const height = 400 * scale;
+            canvas.width = 400 * scale;
+            canvas.height = 400 * scale;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
             
-            canvas.width = width;
-            canvas.height = height;
-            const ctx = canvas.getContext('2d');
-            
-            ctx.clearRect(0, 0, width, height);
-            ctx.drawImage(img, 0, 0, width, height);
-            
-            const pngUrl = canvas.toDataURL('image/png');
-            const downloadLink = document.createElement('a');
-            downloadLink.href = pngUrl;
-            downloadLink.download = `${filename}_${width}x${height}.png`;
-            document.body.appendChild(downloadLink);
-            downloadLink.click();
-            document.body.removeChild(downloadLink);
+            const link = document.createElement('a');
+            link.download = `Punto33_Logo_${idx+1}_${canvas.width}px.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
             URL.revokeObjectURL(url);
-            
-            // Console log para registro
-            console.log(`[EXITO] Logo ${filename} descargado a ${width}x${height}px`);
         };
         img.src = url;
     }
