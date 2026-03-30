@@ -6,137 +6,296 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>Punto 33 | Logo Lab Vasos de Previa</title>
+    <title>Punto 33 | Drink Builder Pro</title>
     <style>
         :root {
             --bg: #020617; --card-bg: #0f172a; --text: #f8fafc;
             --accent: #10b981; --border: #1e293b;
         }
-        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; }
-        header { text-align: center; padding: 3rem 1rem; background: radial-gradient(circle at top, #1e1b4b, #020617); border-bottom: 1px solid var(--border); }
-        h1 { margin: 0; font-size: 2.5rem; color: #fff; }
-        p { color: #94a3b8; margin-top: 0.5rem; }
-        .container { max-width: 1400px; margin: 0 auto 2rem; padding: 0 2rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2.5rem; }
-        .logo-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; display: flex; flex-direction: column; transition: transform 0.3s; }
-        .logo-card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
-        .preview { background: #fff; border-radius: 12px; height: 300px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; overflow: hidden; position: relative; }
-        .preview svg { width: 100%; height: 100%; max-width: 280px; }
-        .controls { display: flex; flex-direction: column; gap: 0.8rem; margin-top: auto; }
-        .row { display: flex; gap: 0.5rem; }
-        select, button { padding: 0.6rem; border-radius: 8px; border: 1px solid var(--border); background: #1e293b; color: #fff; font-size: 0.9rem; cursor: pointer; }
-        button { background: var(--accent); color: #000; font-weight: bold; border: none; transition: opacity 0.2s; }
-        button:hover { opacity: 0.8; }
+        body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; }
+        
+        header { 
+            text-align: center; padding: 2rem 1rem; 
+            background: linear-gradient(to bottom, #1e1b4b, #020617);
+            border-bottom: 1px solid var(--border);
+        }
+
+        main {
+            max-width: 1200px; margin: 2rem auto; padding: 0 2rem;
+            display: grid; grid-template-columns: 1fr 1.2fr; gap: 3rem;
+        }
+
+        @media (max-width: 900px) { main { grid-template-columns: 1fr; } }
+
+        /* PREVIEW PANEL */
+        .preview-panel {
+            background: var(--card-bg); border-radius: 24px; border: 1px solid var(--border);
+            padding: 2rem; position: sticky; top: 2rem; height: fit-content;
+            display: flex; flex-direction: column; align-items: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .svg-container {
+            width: 100%; max-width: 400px; aspect-ratio: 1;
+            background: #fff; border-radius: 16px; display: flex; 
+            align-items: center; justify-content: center; overflow: hidden;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .svg-container svg { width: 90%; height: 90%; }
+
+        /* CONTROL PANEL */
+        .control-panel { display: flex; flex-direction: column; gap: 1.5rem; }
+
+        .option-group {
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 16px; padding: 1.5rem;
+        }
+
+        label { display: block; margin-bottom: 0.8rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem; }
+
+        select, button {
+            width: 100%; padding: 0.8rem; border-radius: 10px; border: 1px solid var(--border);
+            background: #1e293b; color: #fff; font-size: 1rem; cursor: pointer; outline: none;
+        }
+
+        select:focus { border-color: var(--accent); }
+
+        .btn-download {
+            background: var(--accent); color: #000; font-weight: 800; border: none;
+            margin-top: 1rem; font-size: 1.1rem; transition: all 0.2s;
+            display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+        }
+
+        .btn-download:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3); }
+
+        .badge-new { background: #ef4444; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.6rem; vertical-align: middle; margin-left: 5px; }
+        
         canvas { display: none; }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>Punto 33 | Logo Lab: Edición Vasos</h1>
-    <p>30 Tragos en vaso cónico transparente. Elige el estilo de bebida y descarga.</p>
+    <h1>🍻 Punto 33 | Drink Builder</h1>
+    <p>Personaliza tu trago y genera el logo perfecto para tu carta o redes.</p>
 </header>
 
-<div class="container" id="grid-container"></div>
+<main>
+    <!-- LADO IZQUIERDO: PREVIEW -->
+    <div class="preview-panel">
+        <div class="svg-container" id="svg-output"></div>
+        <div style="margin-top: 1.5rem; text-align: center;">
+            <h2 id="display-name" style="margin:0; font-size: 1.5rem;">Cargando...</h2>
+            <p style="color: var(--accent); margin: 0.5rem 0 0;">Preview en Tiempo Real</p>
+        </div>
+    </div>
+
+    <!-- LADO DERECHO: OPCIONES -->
+    <div class="control-panel">
+        
+        <div class="option-group">
+            <label>1. Selecciona la Base</label>
+            <select id="base-drink" onchange="updateOptions()">
+                <option value="vodka">Vodka</option>
+                <option value="gin">Gin Tonic</option>
+                <option value="fernet">Fernet</option>
+                <option value="campari">Campari</option>
+                <option value="cerveza">Cerveza</option>
+                <option value="aperol">Aperol</option>
+                <option value="licor">Licor de Autor</option>
+            </select>
+        </div>
+
+        <div class="option-group">
+            <label>2. Elige el Sabor / Mezcla</label>
+            <select id="mix-flavor" onchange="updateBuilder()"></select>
+        </div>
+
+        <div class="option-group">
+            <label>3. Estilo de Vaso y Detalles</label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div>
+                    <span style="font-size:0.8rem; opacity:0.6;">Material</span>
+                    <select id="cup-style" onchange="updateBuilder()">
+                        <option value="crystal">💎 Cristalino</option>
+                        <option value="neon">🌈 Neón Glam</option>
+                        <option value="gold">🏆 Gold Edition</option>
+                        <option value="dark">🌑 Smoke Black</option>
+                    </select>
+                </div>
+                <div>
+                    <span style="font-size:0.8rem; opacity:0.6;">Resolución</span>
+                    <select id="scale-res">
+                        <option value="4">HD (1600px)</option>
+                        <option value="8">4K (3200px)</option>
+                        <option value="12">Ultra (4800px)</option>
+                    </select>
+                </div>
+            </div>
+            <div style="margin-top:1rem; display: flex; gap: 1rem;">
+                <label style="flex:1; margin:0;"><input type="checkbox" id="check-ice" checked onchange="updateBuilder()"> Hielos</label>
+                <label style="flex:1; margin:0;"><input type="checkbox" id="check-straw" checked onchange="updateBuilder()"> Sorbete</label>
+                <label style="flex:1; margin:0;"><input type="checkbox" id="check-fruit" checked onchange="updateBuilder()"> Fruta</label>
+            </div>
+        </div>
+
+        <button class="btn-download" onclick="downloadResult()">
+            📥 DESCARGAR LOGO PNG
+        </button>
+
+    </div>
+</main>
+
 <canvas id="canvas"></canvas>
 
 <script>
-    // Colores de bebidas temáticas
-    const drinkColors = [
-        "#422006", "#dc2626", "#0891b2", "#f59e0b", "#65a30d", "#7c3aed", "#db2777", "#2563eb", "#ea580c", "#16a34a",
-        "#854d0e", "#be123c", "#0369a1", "#d97706", "#4d7c0f", "#6d28d9", "#9f1239", "#1d4ed8", "#c2410c", "#15803d",
-        "#713f12", "#991b1b", "#075985", "#b45309", "#3f6212", "#5b21b6", "#881337", "#1e40af", "#9a3412", "#166534"
-    ];
-
-    // Paletas de estilo para el VASO y acentos
-    const palettes = {
-        crystal: { cup: "rgba(200,220,255,0.3)", stroke: "#94a3b8", ice: "#e2e8f0" },
-        neon: { cup: "rgba(255,255,255,0.1)", stroke: "#f472b6", ice: "#38bdf8" },
-        gold: { cup: "rgba(212,175,55,0.1)", stroke: "#d4af37", ice: "#fef08a" },
-        dark: { cup: "rgba(0,0,0,0.2)", stroke: "#334155", ice: "#ffffff" }
+    const drinkData = {
+        vodka: {
+            name: "Vodka",
+            mixes: [
+                { label: "Vodka con Frutilla", color: "#dc2626", fruit: "#ef4444" },
+                { label: "Vodka con Durazno", color: "#fbbf24", fruit: "#ea580c" },
+                { label: "Vodka con Naranja", color: "#f97316", fruit: "#fbbf24" },
+                { label: "Vodka con Energizante", color: "#7c3aed", fruit: "#a7f3d0" },
+                { label: "Vodka con Manzana", color: "#84cc16", fruit: "#166534" }
+            ]
+        },
+        gin: {
+            name: "Gin Tonic",
+            mixes: [
+                { label: "Gin Tonic Clásico", color: "#f0f9ff", fruit: "#10b981" },
+                { label: "Gin Tonic Frutos Rojos", color: "#f472b6", fruit: "#9f1239" },
+                { label: "Gin Tonic Pepino & Lima", color: "#ecfdf5", fruit: "#22c55e" },
+                { label: "Gin Tonic Blue", color: "#38bdf8", fruit: "#0369a1" }
+            ]
+        },
+        fernet: {
+            name: "Fernet",
+            mixes: [
+                { label: "Fernet con Coca", color: "#2d1606", fruit: "#422006" },
+                { label: "Fernet con Menta", color: "#064e3b", fruit: "#10b981" }
+            ]
+        },
+        campari: {
+            name: "Campari",
+            mixes: [
+                { label: "Campari Orange", color: "#ea580c", fruit: "#fbbf24" },
+                { label: "Campari Tonic", color: "#be123c", fruit: "#f43f5e" }
+            ]
+        },
+        cerveza: {
+            name: "Cerveza",
+            mixes: [
+                { label: "Cerveza Rubia", color: "#fbbf24", fruit: "#f59e0b" },
+                { label: "Cerveza Roja", color: "#991b1b", fruit: "#7f1d1d" },
+                { label: "Cerveza Negra", color: "#1a0f02", fruit: "#311808" },
+                { label: "Cerveza IPA", color: "#d97706", fruit: "#b45309" }
+            ]
+        },
+        aperol: {
+            name: "Aperol",
+            mixes: [
+                { label: "Aperol Spritz", color: "#fb923c", fruit: "#f97316" }
+            ]
+        },
+        licor: {
+            name: "Licor de Autor",
+            mixes: [
+                { label: "Blue Hawaii", color: "#0ea5e9", fruit: "#0284c7" },
+                { label: "Melón & Vodka", color: "#65a30d", fruit: "#3f6212" },
+                { label: "Violet Night", color: "#6d28d9", fruit: "#4c1d95" }
+            ]
+        }
     };
 
-    function generateVasoSVG(index, paletteKey) {
-        const drinkColor = drinkColors[index];
-        const p = palettes[paletteKey];
+    const cupPalettes = {
+        crystal: { cup: "rgba(200,230,255,0.25)", stroke: "#94a3b8", ice: "#e2e8f0" },
+        neon: { cup: "rgba(255,255,255,0.05)", stroke: "#f472b6", ice: "#38bdf8" },
+        gold: { cup: "rgba(212,175,55,0.1)", stroke: "#d4af37", ice: "#fef08a" },
+        dark: { cup: "rgba(0,0,0,0.3)", stroke: "#334155", ice: "#ffffff" }
+    };
+
+    function updateOptions() {
+        const base = document.getElementById('base-drink').value;
+        const mixSelect = document.getElementById('mix-flavor');
+        mixSelect.innerHTML = "";
         
-        // Estructura base del vaso cónico
-        const cupPath = "M 130 80 L 155 340 A 15 15 0 0 0 170 355 L 230 355 A 15 15 0 0 0 245 340 L 270 80";
-        const liquidPath = "M 138 160 L 157 335 L 243 335 L 262 160 Z";
+        drinkData[base].mixes.forEach((mix, idx) => {
+            const opt = document.createElement('option');
+            opt.value = idx;
+            opt.textContent = mix.label;
+            mixSelect.appendChild(opt);
+        });
+        updateBuilder();
+    }
+
+    function updateBuilder() {
+        const baseKey = document.getElementById('base-drink').value;
+        const mixIdx = document.getElementById('mix-flavor').value;
+        const styleKey = document.getElementById('cup-style').value;
         
-        // Variaciones de contenido (hielos, sorbetes, etc)
-        let extras = "";
-        if (index % 3 === 0) { // Con sorbete curvo
-            extras += `<path d="M 220 160 L 260 40 L 290 45" fill="none" stroke="${p.stroke}" stroke-width="8" stroke-linecap="round"/>`;
-        } else if (index % 3 === 1) { // Con doble sorbete
-            extras += `<line x1="180" y1="160" x2="200" y2="50" stroke="${p.stroke}" stroke-width="6" stroke-linecap="round"/>`;
-            extras += `<line x1="195" y1="160" x2="215" y2="50" stroke="${p.stroke}" stroke-width="6" stroke-linecap="round"/>`;
-        }
+        const mix = drinkData[baseKey].mixes[mixIdx];
+        const p = cupPalettes[styleKey];
+        
+        document.getElementById('display-name').textContent = mix.label;
 
-        if (index % 2 === 0) { // Con rodaja de limón/naranja
-            extras += `<circle cx="260" cy="110" r="35" fill="none" stroke="${drinkColor}" stroke-width="4" opacity="0.6"/>`;
-            extras += `<line x1="260" y1="75" x2="260" y2="145" stroke="${drinkColor}" stroke-width="1" opacity="0.4"/>`;
-        }
+        // Flags
+        const showIce = document.getElementById('check-ice').checked;
+        const showStraw = document.getElementById('check-straw').checked;
+        const showFruit = document.getElementById('check-fruit').checked;
 
-        // Hielos detallados
-        const ice = `<rect x="170" y="220" width="40" height="40" rx="5" fill="${p.ice}" opacity="0.4" transform="rotate(15 190 240)"/>
-                     <rect x="200" y="270" width="35" height="35" rx="5" fill="${p.ice}" opacity="0.3" transform="rotate(-10 217 287)"/>`;
-
-        return `
-        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+        // Construcción del SVG
+        const svg = `
+        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" id="main-svg">
             <rect width="400" height="400" fill="white"/>
-            <!-- Bebida -->
-            <path d="${liquidPath}" fill="${drinkColor}" opacity="0.9"/>
+            
+            <!-- Liquido -->
+            <path d="M 138 160 L 157 335 L 243 335 L 262 160 Z" fill="${mix.color}" opacity="0.95"/>
+            
+            <!-- Burbujas dinámicas -->
+            <g opacity="0.4">
+                <circle cx="160" cy="200" r="4" fill="white"/>
+                <circle cx="200" cy="280" r="6" fill="white"/>
+                <circle cx="230" cy="230" r="3" fill="white"/>
+            </g>
+
             <!-- Hielos -->
-            ${ice}
-            <!-- Vaso -->
-            <path d="${cupPath}" fill="${p.cup}" stroke="${p.stroke}" stroke-width="6" stroke-linejoin="round"/>
-            <!-- Detalles de plástico -->
-            <line x1="140" y1="120" x2="260" y2="120" stroke="${p.stroke}" stroke-width="2" opacity="0.3"/>
-            <line x1="145" y1="160" x2="255" y2="160" stroke="${p.stroke}" stroke-width="2" opacity="0.3"/>
-            <!-- Extras -->
-            ${extras}
-            <!-- Texto Punto 33 -->
-            <rect x="140" y="200" width="120" height="40" fill="white" opacity="0.9" rx="5"/>
-            <text x="200" y="230" font-family="Impact" font-size="28" fill="#000" text-anchor="middle">PUNTO 33</text>
+            ${showIce ? `
+                <rect x="170" y="240" width="45" height="45" rx="8" fill="${p.ice}" opacity="0.3" transform="rotate(15 192 262)"/>
+                <rect x="200" y="290" width="40" height="40" rx="8" fill="${p.ice}" opacity="0.2" transform="rotate(-10 220 310)"/>
+            ` : ''}
+
+            <!-- Sorbete -->
+            ${showStraw ? `
+                <path d="M 210 160 L 250 40 L 280 50" fill="none" stroke="${p.stroke}" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+                <line x1="250" y1="40" x2="210" y2="160" stroke="${mix.color}" stroke-width="2" opacity="0.3"/>
+            ` : ''}
+
+            <!-- Fruta -->
+            ${showFruit ? `
+                <circle cx="260" cy="110" r="35" fill="none" stroke="${mix.fruit}" stroke-width="6" opacity="0.8"/>
+                <line x1="260" y1="75" x2="260" y2="145" stroke="${mix.fruit}" stroke-width="2" opacity="0.5"/>
+            ` : ''}
+
+            <!-- El Vaso -->
+            <path d="M 130 80 L 155 340 A 15 15 0 0 0 170 355 L 230 355 A 15 15 0 0 0 245 340 L 270 80" fill="${p.cup}" stroke="${p.stroke}" stroke-width="8" stroke-linejoin="round"/>
+            
+            <!-- Brillos del plástico -->
+            <path d="M 145 100 L 165 320" stroke="white" stroke-width="4" opacity="0.4" stroke-linecap="round"/>
+            
+            <!-- Etiqueta Punto 33 -->
+            <rect x="135" y="190" width="130" height="45" rx="5" fill="white" stroke="${p.stroke}" stroke-width="2"/>
+            <text x="200" y="222" font-family="Impact" font-size="30" fill="#000" text-anchor="middle">PUNTO 33</text>
         </svg>`;
+
+        document.getElementById('svg-output').innerHTML = svg;
     }
 
-    const grid = document.getElementById('grid-container');
-
-    for (let i = 0; i < 30; i++) {
-        const card = document.createElement('div');
-        card.className = 'logo-card';
-        card.innerHTML = `
-            <div class="preview" id="prev-${i}"></div>
-            <h3 style="margin:0 0 1rem 0; font-size:1.1rem;">Trago #${i + 1}</h3>
-            <div class="controls">
-                <div class="row">
-                    <select id="style-${i}" onchange="renderLogo(${i})" style="flex:1">
-                        <option value="crystal">💎 Cristalino</option>
-                        <option value="neon">🌈 Neón Glam</option>
-                        <option value="gold">🏆 Edición Oro</option>
-                        <option value="dark">🌑 Elegante Dark</option>
-                    </select>
-                    <select id="scale-${i}">
-                        <option value="4">HD (1600px)</option>
-                        <option value="8">4K (3200px)</option>
-                    </select>
-                </div>
-                <button onclick="downloadLogo(${i})">⬇️ DESCARGAR PNG</button>
-            </div>
-        `;
-        grid.appendChild(card);
-        renderLogo(i);
-    }
-
-    function renderLogo(idx) {
-        const style = document.getElementById(`style-${idx}`).value;
-        document.getElementById(`prev-${idx}`).innerHTML = generateVasoSVG(idx, style);
-    }
-
-    function downloadLogo(idx) {
-        const svgEl = document.getElementById(`prev-${idx}`).querySelector('svg');
-        const scale = document.getElementById(`scale-${idx}`).value;
+    function downloadResult() {
+        const svgEl = document.getElementById('main-svg');
+        const scale = parseFloat(document.getElementById('scale-res').value);
+        const name = document.getElementById('display-name').textContent.replace(/ /g, "_");
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
 
@@ -152,13 +311,16 @@
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
             
             const link = document.createElement('a');
-            link.download = `Punto33_Trago_Vaso_${idx+1}.png`;
+            link.download = `Punto33_${name}.png`;
             link.href = canvas.toDataURL('image/png');
             link.click();
             URL.revokeObjectURL(url);
         };
         img.src = url;
     }
+
+    // Inicialización
+    updateOptions();
 </script>
 
 </body>
