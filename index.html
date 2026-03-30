@@ -3,70 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <title>Liquid Engine v6.0 | Olas Vivas</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <title>Logo Dinámico Reducido</title>
+    <style>
+        body { background: #020617; color: white; font-family: sans-serif; height: 300vh; margin: 0; display: flex; flex-direction: column; align-items: center; }
+        
+        /* Simulación de cabecera */
+        .header {
+            position: fixed; top: 0; width: 100%; padding: 1rem;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(10px);
+            border-bottom: 1px solid #1e293b; z-index: 100;
+        }
+
+        /* ESTILO DEL LOGO REDUCIDO */
+        .logo-container { width: 120px; height: 120px; }
+        
+        .content { margin-top: 150px; text-align: center; max-width: 400px; padding: 2rem; color: #94a3b8; }
+        .scroll-arrow { font-size: 2rem; margin-top: 2rem; animation: bounce 2s infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    </style>
 </head>
 <body>
 
-    <header>
-        <h1>🌊 Punto 33 | Olas Vivas</h1>
-        <p>Motor de físicas líquidas continuas. ¡El líquido nunca se detiene!</p>
-    </header>
-
-    <div class="main-layout">
-        <!-- ÁREA DEL VASO -->
-        <div class="glass-display">
-            <svg viewBox="0 0 400 400" id="main-svg" xmlns="http://www.w3.org/2000/svg">
+    <div class="header">
+        <div class="logo-container">
+            <svg viewBox="0 0 400 400" id="liquid-logo">
                 <defs>
-                    <clipPath id="cup-shape">
-                        <path d="M 120 100 L 140 340 A 10 10 0 0 0 150 350 L 250 350 A 10 10 0 0 0 260 340 L 280 100 Z" />
+                    <clipPath id="cup-mask">
+                        <path d="M 125 110 L 145 340 A 10 10 0 0 0 155 350 L 245 350 A 10 10 0 0 0 255 340 L 275 110 Z" />
                     </clipPath>
                 </defs>
-
-                <!-- Fondo Negro Vaso -->
-                <path d="M 120 100 L 140 340 A 10 10 0 0 0 150 350 L 250 350 A 10 10 0 0 0 260 340 L 280 100 Z" fill="#000" opacity="0.3"/>
-
-                <!-- GRUPO LÍQUIDO ENMASCARADO -->
-                <g clip-path="url(#cup-shape)">
-                    <!-- Ola Trasera (Controlada por JS Frame a Frame) -->
-                    <path id="wave-path-back" d="" fill="#991b1b" opacity="0.8"/>
-                    
-                    <!-- Ola Frontal (Controlada por JS Frame a Frame) -->
-                    <path id="wave-path-front" d="" fill="#dc2626" opacity="0.95"/>
-                    
-                    <!-- Hielos -->
-                    <g id="ice-group" transform="translate(0, 350)">
-                        <rect x="175" y="0" width="45" height="45" rx="8" fill="white" opacity="0.4" transform="rotate(15 197 22)"/>
+                <!-- Sorbete Detrás -->
+                <path d="M 230 140 L 275 40 L 300 50" fill="none" stroke="#94a3b8" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- Líquido Animado -->
+                <g clip-path="url(#cup-mask)">
+                    <path id="wave-back" d="" fill="#991b1b" opacity="0.6"/>
+                    <path id="wave-front" d="" fill="#dc2626" opacity="0.95"/>
+                    <g id="ice-cubes">
+                        <rect x="175" y="0" width="45" height="45" rx="8" fill="white" opacity="0.4" transform="rotate(15 195 22)"/>
                         <rect x="210" y="10" width="35" height="35" rx="8" fill="white" opacity="0.3" transform="rotate(-10 227 27)"/>
                     </g>
                 </g>
-
-                <!-- Vaso Físico Frontal -->
-                <path d="M 115 90 L 135 345 A 15 15 0 0 0 150 360 L 250 360 A 15 15 0 0 0 265 345 L 285 90" fill="rgba(255,255,255,0.05)" stroke="#475569" stroke-width="8" />
-                
-                <!-- Etiqueta Punto 33 -->
-                <rect x="135" y="210" width="130" height="50" rx="6" fill="#000" stroke="#475569" stroke-width="2"/>
-                <text x="200" y="245" font-family="Impact" font-size="30" fill="white" text-anchor="middle">PUNTO 33</text>
+                <!-- Vaso Cristal -->
+                <path d="M 120 100 L 140 345 A 15 15 0 0 0 155 360 L 245 360 A 15 15 0 0 0 260 345 L 280 100" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="8" stroke-linejoin="round"/>
             </svg>
         </div>
-
-        <div class="scroll-msg">⬇️ SCROLLEA PARA LLENAR EL VASO ⬇️</div>
-
-        <!-- PANEL DE CONTROL -->
-        <div class="control-box">
-            <div class="slider-container">
-                <label>Controlador de Nivel (Slider Manual):</label>
-                <input type="range" id="manual-slider" min="0" max="100" value="0">
-            </div>
-
-            <button class="btn-download" onclick="downloadPNG()">📸 Capturar Foto de la Ola (PNG)</button>
-        </div>
+        <div style="font-size: 1.5rem; font-weight: 800; margin-left: 1rem;">PUNTO <span style="color: #10b981;">33</span></div>
     </div>
 
-    <canvas id="canvas"></canvas>
-    
-    <!-- Lógica de Olas Matemáticas (60fps) -->
-    <script src="js/app.js"></script>
+    <div class="content">
+        <h1>Logo Vivo v1.0</h1>
+        <p>Baja la página para ver cómo el logo de la cabecera reacciona a tu movimiento.</p>
+        <div class="scroll-arrow">👇</div>
+    </div>
+
+    <script>
+        let time = 0, scrollPct = 0;
+        const waveF = document.getElementById('wave-front'), 
+              waveB = document.getElementById('wave-back'), 
+              ice = document.getElementById('ice-cubes');
+
+        // Motor de dibujo de olas
+        function draw(baseY, phase, amp) {
+            let d = `M 0 400 L 0 ${baseY}`;
+            for (let x = 0; x <= 400; x += 20) {
+                const y = baseY + Math.sin((x / 50) + time + phase) * amp;
+                d += ` L ${x} ${y}`;
+            }
+            return d + ` L 400 400 Z`;
+        }
+
+        // Bucle de animación 60fps
+        function loop() {
+            time += 0.05;
+            const y = 350 - (240 * scrollPct); // Rango de llenado
+            
+            waveF.setAttribute('d', draw(y, 0, 10));
+            waveB.setAttribute('d', draw(y, Math.PI, 6));
+            
+            // Flotación de hielos
+            const iceY = y - 25 + Math.sin(time) * 5;
+            ice.setAttribute('transform', `translate(0, ${iceY > 320 ? 320 : iceY})`);
+            ice.style.opacity = scrollPct < 0.05 ? 0 : 1;
+
+            requestAnimationFrame(loop);
+        }
+
+        // Detección de scroll simplificada
+        window.addEventListener('scroll', () => {
+            const max = document.body.scrollHeight - window.innerHeight;
+            scrollPct = Math.min(1, window.scrollY / max);
+        });
+
+        loop();
+    </script>
 </body>
 </html>
