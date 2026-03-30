@@ -4,62 +4,92 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <title>Punto 33 | Liquid Engine</title>
+    <title>Punto 33 | Scroll Liquid Engine</title>
     <style>
         :root { --bg: #020617; --accent: #10b981; --card: #0f172a; }
-        body { margin: 0; padding: 0; background-color: var(--bg); color: white; font-family: 'Segoe UI', system-ui, sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; }
-        header { text-align: center; padding: 2rem 1rem; width: 100%; border-bottom: 1px solid #1e293b; background: linear-gradient(to bottom, #1e1b4b, var(--bg)); }
-        h1 { margin: 0; font-size: 2.2rem; color: #fff; }
-        p { color: #94a3b8; margin-top: 0.5rem; }
-
-        .lab-container { display: flex; flex-wrap: wrap; gap: 3rem; margin: 3rem auto; padding: 0 2rem; max-width: 1000px; width: 100%; justify-content: center; }
-
-        .glass-container {
-            width: 100%; max-width: 400px; aspect-ratio: 1;
-            background: radial-gradient(circle, #1e293b 0%, var(--bg) 70%);
-            border-radius: 24px; box-shadow: 0 0 50px rgba(0,0,0,0.8) inset;
-            display: flex; align-items: center; justify-content: center;
-            border: 1px solid #1e293b;
+        body { 
+            margin: 0; padding: 0; background-color: var(--bg); color: white; 
+            font-family: 'Segoe UI', system-ui, sans-serif; 
+            height: 350vh; /* Altura masiva para permitir el scroll */
+            overflow-x: hidden;
         }
 
-        svg { width: 100%; height: 100%; filter: drop-shadow(0 20px 30px rgba(0,0,0,0.5)); }
+        /* TEXTOS DE FONDO (Guías de Scroll) */
+        .scroll-marker { position: absolute; width: 100%; text-align: center; font-size: 3rem; font-weight: 900; color: rgba(255,255,255,0.05); letter-spacing: 4px; pointer-events: none; z-index: 1; }
+        .m1 { top: 20vh; }
+        .m2 { top: 150vh; }
+        .m3 { top: 280vh; }
 
+        /* CONTENEDOR FIJO DEL VASO */
+        .sticky-wrapper {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 10; pointer-events: none;
+        }
+
+        .glass-container {
+            width: 100%; max-width: 450px; aspect-ratio: 1;
+            background: radial-gradient(circle, #1e293b 0%, transparent 70%);
+            border-radius: 50%; pointer-events: auto; /* Permite clics en el vaso si es necesario */
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        svg { width: 100%; height: 100%; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.8)); }
+
+        /* PANEL DE CONTROL FLOTANTE */
         .controls {
-            background: var(--card); padding: 2rem; border-radius: 20px;
-            border: 1px solid #1e293b; display: flex; flex-direction: column; gap: 1.5rem;
-            min-width: 300px; flex: 1;
+            position: fixed; bottom: 2rem; right: 2rem; z-index: 20;
+            background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(10px);
+            padding: 1.5rem; border-radius: 16px; border: 1px solid #334155;
+            display: flex; flex-direction: column; gap: 1rem; width: 300px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
         
         .controls h3 { margin: 0; color: var(--accent); text-transform: uppercase; font-size: 1.1rem; }
         .controls label { font-size: 0.85rem; color: #94a3b8; font-weight: bold; text-transform: uppercase; }
 
         select, button {
-            width: 100%; padding: 1rem; border-radius: 12px; border: 1px solid #334155;
+            width: 100%; padding: 0.8rem; border-radius: 10px; border: 1px solid #334155;
             background: var(--bg); color: white; font-weight: bold; font-size: 1rem; cursor: pointer; outline: none;
         }
 
-        .btn-action { background: #3b82f6; color: white; border: none; transition: transform 0.2s; }
-        .btn-action:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3); }
-
-        .btn-download { background: var(--accent); color: black; border: none; margin-top: auto; }
+        .btn-download { background: var(--accent); color: black; border: none; margin-top: 0.5rem; transition: transform 0.2s; }
         .btn-download:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3); }
+
+        /* INSTRUCCIÓN DE SCROLL ANIMADA */
+        .scroll-hint {
+            position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+            display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+            color: var(--accent); font-weight: bold; font-size: 1rem; text-transform: uppercase;
+            animation: bounce 2s infinite; z-index: 5; transition: opacity 0.3s;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+            40% { transform: translateY(-15px) translateX(-50%); }
+            60% { transform: translateY(-7px) translateX(-50%); }
+        }
 
         canvas { display: none; }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>🧪 Liquid Engine | Punto 33</h1>
-        <p>Motor de físicas líquidas con SVG. El vaso se llena automáticamente.</p>
-    </header>
+    <!-- Guías visuales en el fondo -->
+    <div class="scroll-marker m1">⬇️ BAJA PARA LLENAR</div>
+    <div class="scroll-marker m2">🧊 SIRVIENDO...</div>
+    <div class="scroll-marker m3">🍻 ¡SALUD!</div>
 
-    <div class="lab-container">
-        <!-- VISTA PREVIA DEL VASO -->
+    <div class="scroll-hint" id="scroll-hint">
+        <span>Scrollea hacia abajo</span>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+    </div>
+
+    <!-- Contenedor que mantiene el vaso en pantalla -->
+    <div class="sticky-wrapper">
         <div class="glass-container">
             <svg viewBox="0 0 400 400" id="main-svg" xmlns="http://www.w3.org/2000/svg">
                 <defs>
-                    <!-- Clip Path con la forma INTERNA del vaso para que el líquido no se salga -->
+                    <!-- Clip Path: Forma interna del vaso -->
                     <clipPath id="cup-inner">
                         <path d="M 115 105 L 140 340 A 10 10 0 0 0 150 350 L 250 350 A 10 10 0 0 0 260 340 L 285 105 Z" />
                     </clipPath>
@@ -68,22 +98,22 @@
                 <!-- Sorbete Fondo -->
                 <path d="M 230 140 L 270 40 L 300 50" fill="none" stroke="#94a3b8" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
 
-                <!-- GRUPO DEL LÍQUIDO (Enmascarado por la forma del vaso) -->
+                <!-- GRUPO DEL LÍQUIDO ENMASCARADO -->
                 <g clip-path="url(#cup-inner)">
-                    <!-- Fondo oscuro del líquido para dar profundidad -->
+                    <!-- Fondo base del vaso (vacío) -->
                     <path d="M 0 0 L 400 0 L 400 400 L 0 400 Z" fill="#000000" opacity="0.3"/>
                     
-                    <!-- EJE Y ANIMADO DEL LÍQUIDO (Sube y baja) -->
-                    <g id="liquid-level" style="transform: translateY(350px); transition: transform 2.5s cubic-bezier(0.25, 1, 0.5, 1);">
+                    <!-- LÍQUIDO DINÁMICO (Se mueve en el eje Y con JS) -->
+                    <!-- Posición inicial: translateY(350) = Vaso vacío -->
+                    <g id="liquid-level" transform="translate(0, 350)">
                         
-                        <!-- OLA TRASERA (Más oscura, diferente velocidad) -->
-                        <path id="wave-back" d="M 0 50 Q 100 0 200 50 T 400 50 T 600 50 T 800 50 L 800 400 L 0 400 Z" fill="#b91c1c" opacity="0.6">
-                            <!-- Animación infinita moviendo la ola a la izquierda -->
+                        <!-- OLA TRASERA -->
+                        <path id="wave-back" d="M 0 50 Q 100 0 200 50 T 400 50 T 600 50 T 800 50 L 800 400 L 0 400 Z" fill="#991b1b" opacity="0.6">
                             <animateTransform attributeName="transform" type="translate" from="0 0" to="-400 0" dur="4s" repeatCount="indefinite" />
                         </path>
 
-                        <!-- OLA FRONTAL (Color principal) -->
-                        <path id="wave-front" d="M 0 50 Q 100 80 200 50 T 400 50 T 600 50 T 800 50 L 800 400 L 0 400 Z" fill="#ef4444" opacity="0.9">
+                        <!-- OLA FRONTAL -->
+                        <path id="wave-front" d="M 0 50 Q 100 80 200 50 T 400 50 T 600 50 T 800 50 L 800 400 L 0 400 Z" fill="#dc2626" opacity="0.9">
                             <animateTransform attributeName="transform" type="translate" from="-400 0" to="0 0" dur="3s" repeatCount="indefinite" />
                         </path>
 
@@ -103,7 +133,7 @@
                             </circle>
                         </g>
 
-                        <!-- HIELOS FLOTANTES (Suben con el nivel del líquido y flotan en la ola) -->
+                        <!-- HIELOS FLOTANTES -->
                         <g opacity="0.8">
                             <rect x="140" y="30" width="45" height="45" rx="8" fill="#ffffff" opacity="0.6" transform="rotate(15 160 50)">
                                 <animateTransform attributeName="transform" type="rotate" values="10 160 50; 25 160 50; 10 160 50" dur="4s" repeatCount="indefinite" />
@@ -113,104 +143,115 @@
                                 <animate attributeName="y" values="50; 35; 50" dur="3.5s" repeatCount="indefinite" />
                             </rect>
                         </g>
-
                     </g>
                 </g>
 
-                <!-- Vaso Físico (Plástico/Cristal Frontal) -->
+                <!-- Vaso Físico Frontal -->
                 <path d="M 110 100 L 135 345 A 15 15 0 0 0 150 360 L 250 360 A 15 15 0 0 0 265 345 L 290 100" fill="rgba(255,255,255,0.05)" stroke="#475569" stroke-width="8" stroke-linejoin="round"/>
                 
-                <!-- Brillos del Vaso -->
+                <!-- Brillos del Plástico -->
                 <path d="M 130 120 L 150 330" stroke="white" stroke-width="6" opacity="0.3" stroke-linecap="round"/>
                 <path d="M 270 120 L 250 330" stroke="white" stroke-width="2" opacity="0.1" stroke-linecap="round"/>
                 <line x1="115" y1="130" x2="285" y2="130" stroke="#475569" stroke-width="3" opacity="0.5"/>
                 <line x1="120" y1="170" x2="280" y2="170" stroke="#475569" stroke-width="3" opacity="0.5"/>
 
-                <!-- Etiqueta Punto 33 Frontal -->
+                <!-- Etiqueta Punto 33 -->
                 <rect x="135" y="210" width="130" height="50" rx="6" fill="#000" stroke="#475569" stroke-width="2"/>
-                <text x="200" y="245" font-family="Impact" font-size="32" fill="white" text-anchor="middle">PUNTO 33</text>
+                <text id="logo-text" x="200" y="245" font-family="Impact" font-size="32" fill="#dc2626" text-anchor="middle">PUNTO 33</text>
             </svg>
         </div>
+    </div>
 
-        <!-- CONTROLES -->
-        <div class="controls">
-            <div>
-                <label>1. Tipo de Bebida</label>
-                <select id="color-select" onchange="updateDrink()">
-                    <option value='{"front":"#dc2626", "back":"#991b1b"}'>Campari / Frutos Rojos</option>
-                    <option value='{"front":"#f59e0b", "back":"#b45309"}'>Cerveza Rubia</option>
-                    <option value='{"front":"#2d1606", "back":"#1a0d04"}'>Fernet / Cola</option>
-                    <option value='{"front":"#0ea5e9", "back":"#0284c7"}'>Blue Lagoon</option>
-                    <option value='{"front":"#8b5cf6", "back":"#6d28d9"}'>Gin Violeta</option>
-                    <option value='{"front":"#10b981", "back":"#047857"}'>Menta / Mojito</option>
-                </select>
-            </div>
-
-            <div>
-                <label>2. Acción de Llenado</label>
-                <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
-                    <button class="btn-action" onclick="fillGlass(80)">🌊 Llenar Vaso</button>
-                    <button class="btn-action" style="background: #334155;" onclick="fillGlass(350)">🕳️ Vaciar</button>
-                </div>
-            </div>
-
-            <button class="btn-download" onclick="downloadPNG()">
-                📥 DESCARGAR LOGO PNG (Estado Actual)
-            </button>
+    <!-- CONTROLES -->
+    <div class="controls">
+        <div>
+            <label>Tipo de Bebida</label>
+            <select id="color-select" onchange="updateDrink()">
+                <option value='{"front":"#dc2626", "back":"#991b1b"}'>Campari / Frutos Rojos</option>
+                <option value='{"front":"#f59e0b", "back":"#b45309"}'>Cerveza Rubia</option>
+                <option value='{"front":"#2d1606", "back":"#1a0d04"}'>Fernet / Cola</option>
+                <option value='{"front":"#0ea5e9", "back":"#0284c7"}'>Blue Lagoon</option>
+                <option value='{"front":"#8b5cf6", "back":"#6d28d9"}'>Gin Violeta</option>
+                <option value='{"front":"#10b981", "back":"#047857"}'>Menta / Mojito</option>
+            </select>
         </div>
+
+        <button class="btn-download" onclick="downloadPNG()">
+            📥 DESCARGAR FRAME ACTUAL (PNG)
+        </button>
     </div>
 
     <canvas id="canvas"></canvas>
 
     <script>
         const liquidLevel = document.getElementById('liquid-level');
+        const scrollHint = document.getElementById('scroll-hint');
         const waveFront = document.getElementById('wave-front');
         const waveBack = document.getElementById('wave-back');
+        const logoText = document.getElementById('logo-text');
 
-        // Función para subir/bajar el nivel del líquido usando CSS Translate
-        function fillGlass(yPos) {
-            // yPos: 80 = lleno, 350 = vacío
-            liquidLevel.style.transform = \`translateY(\${yPos}px)\`;
-        }
+        // Constantes del vaso
+        const EMPTY_Y = 350; // Vaso vacío
+        const FULL_Y = 80;   // Vaso lleno (tope)
 
-        // Cambiar el color de las olas
+        // EVENTO DE SCROLL
+        window.addEventListener('scroll', () => {
+            // Ocultar hint de scroll
+            if (window.scrollY > 50) {
+                scrollHint.style.opacity = '0';
+            } else {
+                scrollHint.style.opacity = '1';
+            }
+
+            // Calcular porcentaje de scroll de la página (0 a 1)
+            const scrollTop = window.scrollY;
+            const maxScroll = document.body.scrollHeight - window.innerHeight;
+            const scrollPercent = Math.max(0, Math.min(1, scrollTop / maxScroll));
+
+            // Calcular nueva posición Y del líquido invertida (bajar scroll = subir líquido)
+            const currentY = EMPTY_Y - ((EMPTY_Y - FULL_Y) * scrollPercent);
+
+            // Aplicar transformación directamente al atributo del SVG
+            // Esto es crucial para que al descargar el PNG se guarde la posición exacta
+            liquidLevel.setAttribute('transform', \`translate(0, \${currentY})\`);
+        });
+
+        // Cambiar Color
         function updateDrink() {
             const data = JSON.parse(document.getElementById('color-select').value);
             waveFront.setAttribute('fill', data.front);
             waveBack.setAttribute('fill', data.back);
-            document.querySelector('text').setAttribute('fill', data.front); // Pinta la letra
+            logoText.setAttribute('fill', data.front);
         }
 
-        // Descarga Robustecida para SVG con animaciones y clip-paths
+        // Descarga del SVG actual a PNG
         function downloadPNG() {
             const svgEl = document.getElementById('main-svg');
             const canvas = document.getElementById('canvas');
             const ctx = canvas.getContext('2d');
             
-            // Pausar animaciones temporalmente para tomar la "foto" exacta
+            // Pausar animaciones temporalmente para captura limpia
             document.querySelectorAll('animate, animateTransform').forEach(anim => {
                 if(anim.ownerSVGElement) anim.ownerSVGElement.pauseAnimations();
             });
 
-            // Serializar de forma segura
+            // Serializar el DOM del SVG tal como está
             const svgData = new XMLSerializer().serializeToString(svgEl);
-            
-            // Usar encodeURIComponent y data URI suele ser más robusto para clip-paths que el Blob en algunos navegadores
             const encodedData = encodeURIComponent(svgData);
             const img = new Image();
             
             img.onload = function() {
-                canvas.width = 1600; // 4K Ready
+                canvas.width = 1600; // Alta Resolución
                 canvas.height = 1600;
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                 
                 const link = document.createElement('a');
-                link.download = \`Punto33_Trago_Liquid.png\`;
+                link.download = \`Punto33_Scroll_Capture.png\`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
                 
-                // Reanudar animaciones
+                // Reanudar
                 document.querySelectorAll('animate, animateTransform').forEach(anim => {
                     if(anim.ownerSVGElement) anim.ownerSVGElement.unpauseAnimations();
                 });
@@ -219,13 +260,8 @@
             img.src = "data:image/svg+xml;charset=utf-8," + encodedData;
         }
 
-        // Iniciar: Al cargar la página esperamos medio segundo y llenamos el vaso
-        window.onload = () => {
-            updateDrink();
-            setTimeout(() => {
-                fillGlass(80); // Llenar al nivel 80 (casi hasta el borde)
-            }, 500);
-        };
+        // Inicializar color
+        updateDrink();
     </script>
 </body>
 </html>
