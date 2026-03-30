@@ -1,127 +1,32 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- ANTI CACHE TAGS -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mega Catálogo Logos | Punto 33</title>
+    <title>Punto 33 | Catálogo Premium de Logos</title>
     <style>
         :root {
-            --bg: #020617;
-            --card-bg: #0f172a;
-            --text: #f8fafc;
-            --accent: #10b981;
-            --border: #1e293b;
+            --bg: #020617; --card-bg: #0f172a; --text: #f8fafc;
+            --accent: #10b981; --border: #1e293b;
         }
-
-        body {
-            font-family: 'Inter', system-ui, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0; padding: 0;
-        }
-
-        header {
-            text-align: center;
-            padding: 4rem 1rem;
-            background: radial-gradient(circle at top, #1e1b4b, #020617);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .category-title {
-            grid-column: 1 / -1;
-            font-size: 1.8rem;
-            margin-top: 3rem;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--accent);
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2rem;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 2.5rem;
-        }
-
-        .logo-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 1.5rem;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .logo-card:hover {
-            transform: translateY(-8px);
-            border-color: var(--accent);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-        }
-
-        .preview {
-            background: #fff;
-            border-radius: 12px;
-            height: 240px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-            position: relative;
-            overflow: hidden;
-            background-image: 
-                linear-gradient(45deg, #f1f5f9 25%, transparent 25%), 
-                linear-gradient(-45deg, #f1f5f9 25%, transparent 25%), 
-                linear-gradient(45deg, transparent 75%, #f1f5f9 75%), 
-                linear-gradient(-45deg, transparent 75%, #f1f5f9 75%);
-            background-size: 20px 20px;
-            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-        }
-
-        .preview.dark-mode { background: #000; background-image: none; }
-
-        svg { width: 80%; height: 80%; }
-
-        .card-info { margin-bottom: 1rem; }
-        .card-info h3 { margin: 0; font-size: 1.1rem; color: #fff; }
-
-        .controls {
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-        }
-
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; }
+        header { text-align: center; padding: 3rem 1rem; background: radial-gradient(circle at top, #1e1b4b, #020617); border-bottom: 1px solid var(--border); }
+        h1 { margin: 0; font-size: 2.5rem; color: #fff; }
+        p { color: #94a3b8; margin-top: 0.5rem; }
+        .container { max-width: 1400px; margin: 2rem auto; padding: 0 1rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; }
+        .logo-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; display: flex; flex-direction: column; transition: transform 0.3s; }
+        .logo-card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+        .preview { background: #fff; border-radius: 12px; height: 250px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; overflow: hidden; position: relative; }
+        .preview svg { width: 100%; height: 100%; max-width: 250px; }
+        .controls { display: flex; flex-direction: column; gap: 0.8rem; margin-top: auto; }
         .row { display: flex; gap: 0.5rem; }
-
-        select, button {
-            padding: 0.6rem;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            background: #1e293b;
-            color: #fff;
-            font-size: 0.85rem;
-            cursor: pointer;
-        }
-
-        button.primary {
-            background: var(--accent);
-            color: #000;
-            font-weight: 700;
-            border: none;
-            flex: 1;
-        }
-
-        button.primary:hover { filter: brightness(1.1); }
-
+        select, button { padding: 0.6rem; border-radius: 8px; border: 1px solid var(--border); background: #1e293b; color: #fff; font-size: 0.9rem; cursor: pointer; }
+        button { background: var(--accent); color: #000; font-weight: bold; border: none; transition: opacity 0.2s; }
+        button:hover { opacity: 0.8; }
         canvas { display: none; }
     </style>
 </head>
@@ -129,105 +34,121 @@
 
 <header>
     <h1>Punto 33 | Logo Lab</h1>
-    <p>30 Conceptos Premium. Personaliza colores y descarga en alta resolución.</p>
+    <p>30 Diseños Exclusivos. Elige tu logo, personaliza la paleta de colores y descárgalo en Alta Resolución.</p>
 </header>
 
-<div class="container" id="logo-grid">
-    <!-- El contenido se generará vía JavaScript para manejar los 30 logos eficientemente -->
-</div>
-
-<canvas id="conversion-canvas"></canvas>
+<div class="container" id="grid"></div>
+<canvas id="canvas"></canvas>
 
 <script>
-    const colors = {
-        original: { main: '#10b981', secondary: '#0f172a', text: '#0f172a', bg: '#ffffff' },
-        gold: { main: '#d4af37', secondary: '#1a1a1a', text: '#d4af37', bg: '#000000' },
-        neon: { main: '#f472b6', secondary: '#38bdf8', text: '#fff', bg: '#000000' },
-        mono: { main: '#000000', secondary: '#666666', text: '#000000', bg: '#ffffff' }
+    // Sistema de Paletas de Colores
+    const palettes = {
+        original: { bg: '#ffffff', main: '#10b981', sec: '#0f172a', text: '#020617' },
+        dark: { bg: '#0b0f19', main: '#10b981', sec: '#334155', text: '#ffffff' },
+        gold: { bg: '#050505', main: '#d4af37', sec: '#1a1a1a', text: '#ffffff' },
+        neon: { bg: '#0f0f1b', main: '#f472b6', sec: '#38bdf8', text: '#ffffff' },
+        mono: { bg: '#ffffff', main: '#000000', sec: '#e5e5e5', text: '#000000' }
     };
 
-    const categories = [
-        { name: "Minimalistas", count: 8 },
-        { name: "Nocturnos & Neón", count: 8 },
-        { name: "Vintage & Cerveceros", count: 7 },
-        { name: "Abstractos & Premium", count: 7 }
+    // 30 Diseños elaborados con placeholders para reemplazar colores (__BG__, __MAIN__, __SEC__, __TEXT__)
+    const templates = [
+        // MINIMALISTAS (1-6)
+        `<rect width="400" height="400" fill="__BG__"/><circle cx="200" cy="200" r="150" fill="none" stroke="__MAIN__" stroke-width="8"/><text x="200" y="190" font-family="Arial, sans-serif" font-size="80" font-weight="900" fill="__TEXT__" text-anchor="middle">PUNTO</text><text x="200" y="280" font-family="Arial, sans-serif" font-size="120" font-weight="900" fill="__MAIN__" text-anchor="middle">33</text>`,
+        `<rect width="400" height="400" fill="__BG__"/><rect x="80" y="80" width="240" height="240" fill="none" stroke="__SEC__" stroke-width="12" transform="rotate(45 200 200)"/><text x="200" y="215" font-family="Georgia, serif" font-size="90" font-weight="bold" fill="__MAIN__" text-anchor="middle">P.33</text>`,
+        `<rect width="400" height="400" fill="__BG__"/><path d="M50 200 L350 200" stroke="__MAIN__" stroke-width="6"/><text x="200" y="180" font-family="Impact" font-size="70" fill="__TEXT__" text-anchor="middle">PUNTO</text><text x="200" y="280" font-family="Verdana" font-size="90" font-weight="bold" fill="__MAIN__" text-anchor="middle">33</text>`,
+        `<rect width="400" height="400" fill="__BG__"/><circle cx="200" cy="200" r="140" fill="__SEC__" opacity="0.1"/><text x="200" y="240" font-family="Courier New, monospace" font-size="140" font-weight="bold" fill="__MAIN__" text-anchor="middle">33</text><text x="200" y="320" font-family="Arial" font-size="25" letter-spacing="10" fill="__TEXT__" text-anchor="middle">PUNTO</text>`,
+        `<rect width="400" height="400" fill="__BG__"/><rect x="100" y="100" width="200" height="200" rx="30" fill="__MAIN__"/><text x="200" y="210" font-family="Impact" font-size="50" fill="__BG__" text-anchor="middle">PUNTO</text><text x="200" y="270" font-family="Impact" font-size="70" fill="__BG__" text-anchor="middle">33</text>`,
+        `<rect width="400" height="400" fill="__BG__"/><line x1="120" y1="120" x2="280" y2="280" stroke="__MAIN__" stroke-width="10"/><line x1="280" y1="120" x2="120" y2="280" stroke="__SEC__" stroke-width="10"/><rect x="130" y="160" width="140" height="80" fill="__BG__"/><text x="200" y="220" font-family="Arial" font-size="60" font-weight="bold" fill="__TEXT__" text-anchor="middle">P.33</text>`,
+        
+        // NOCTURNOS & CLUB (7-12)
+        `<rect width="400" height="400" fill="__BG__"/><path d="M100 120 L300 120 L200 240 Z" fill="none" stroke="__MAIN__" stroke-width="8"/><line x1="200" y1="240" x2="200" y2="320" stroke="__MAIN__" stroke-width="8"/><line x1="160" y1="320" x2="240" y2="320" stroke="__MAIN__" stroke-width="8"/><text x="200" y="180" font-family="Verdana" font-size="40" font-weight="bold" fill="__TEXT__" text-anchor="middle">P33</text>`,
+        `<rect width="400" height="400" fill="__BG__"/><circle cx="200" cy="200" r="120" fill="none" stroke="__SEC__" stroke-width="4" stroke-dasharray="10 10"/><path d="M200 100 C 250 200 250 250 200 250 C 150 250 150 200 200 100 Z" fill="__MAIN__"/><text x="200" y="320" font-family="Arial" font-size="45" font-weight="bold" fill="__TEXT__" text-anchor="middle">PUNTO 33</text>`,
+        `<rect width="400" height="400" fill="__BG__"/><path d="M150 100 Q 200 150 250 100 L 250 300 Q 200 250 150 300 Z" fill="none" stroke="__MAIN__" stroke-width="8"/><text x="200" y="220" font-family="Impact" font-size="60" fill="__TEXT__" text-anchor="middle">33</text>`,
+        `<rect width="400" height="400" fill="__BG__"/><polygon points="200,50 330,125 330,275 200,350 70,275 70,125" fill="none" stroke="__MAIN__" stroke-width="10"/><text x="200" y="220" font-family="Courier New" font-size="60" font-weight="bold" fill="__TEXT__" text-anchor="middle">P.33</text>`,
+        `<rect width="400" height="400" fill="__BG__"/><circle cx="200" cy="200" r="140" fill="__SEC__"/><path d="M 200 80 A 100 100 0 0 1 200 320 A 80 80 0 0 0 200 80" fill="__MAIN__"/><text x="200" y="220" font-family="Arial" font-size="50" font-weight="bold" fill="__BG__" text-anchor="middle">33</text>`,
+        `<rect width="400" height="400" fill="__BG__"/><rect x="140" y="100" width="120" height="200" rx="20" fill="none" stroke="__MAIN__" stroke-width="8"/><line x1="140" y1="160" x2="260" y2="160" stroke="__MAIN__" stroke-width="4"/><text x="200" y="230" font-family="Impact" font-size="50" fill="__TEXT__" text-anchor="middle">33</text>`,
+        
+        // VINTAGE & BREWERY (13-18)
+        `<rect width="400" height="400" fill="__BG__"/><circle cx="200" cy="200" r="160" fill="none" stroke="__TEXT__" stroke-width="10"/><circle cx="200" cy="200" r="145" fill="none" stroke="__MAIN__" stroke-width="3"/><path d="M 60 200 Q 200 120 340 200" fill="none" stroke="__TEXT__" stroke-width="4"/><text x="200" y="270" font-family="Georgia" font-size="110" font-weight="bold" fill="__MAIN__" text-anchor="middle">33</text><text x="200" y="160" font-family="Georgia" font-size="35" font-weight="bold" fill="__TEXT__" text-anchor="middle">PUNTO</text>`,
+        `<rect width="400" height="400" fill="__BG__"/><polygon points="200,40 340,100 340,280 200,360 60,280 60,100" fill="none" stroke="__TEXT__" stroke-width="8"/><polygon points="200,60 320,115 320,265 200,340 80,265 80,115" fill="__SEC__" opacity="0.3"/><text x="200" y="240" font-family="Times New Roman" font-size="100" font-weight="bold" fill="__MAIN__" text-anchor="middle">33</text>`,
+        `<rect width="400" height="400" fill="__BG__"/><path d="M 120 180 C 120 100 280 100 280 180 L 280 300 C 280 320 120 320 120 300 Z" fill="none" stroke="__MAIN__" stroke-width="12"/><path d="M 280 200 C 310 200 310 260 280 260" fill="none" stroke="__MAIN__" stroke-width="12"/><text x="200" y="260" font-family="Impact" font-size="60" fill="__TEXT__" text-anchor="middle">33</text>`,
+        `<rect width="400" height="400" fill="__BG__"/><path d="M 100 150 L 300 150 L 280 250 L 120 250 Z" fill="__MAIN__"/><path d="M 120 250 L 200 320 L 280 250" fill="none" stroke="__MAIN__" stroke-width="8"/><text x="200" y="220" font-family="Arial" font-size="60" font-weight="bold" fill="__BG__" text-anchor="middle">P.33</text>`,
+        `<rect width="400" height="400" fill="__BG__"/><circle cx="200" cy="200" r="150" fill="__SEC__" opacity="0.2"/><path d="M 150 150 L 200 80 L 250 150 L 320 200 L 250 250 L 200 320 L 150 250 L 80 200 Z" fill="__MAIN__"/><text x="200" y="220" font-family="Arial" font-size="50" font-weight="bold" fill="__BG__" text-anchor="middle">33</text>`,
+        `<rect width="400" height="400" fill="__BG__"/><rect x="80" y="160" width="240" height="80" fill="__MAIN__"/><path d="M 80 160 L 60 180 L 60 220 L 80 240 M 320 160 L 340 180 L 340 220 L 320 240" fill="none" stroke="__MAIN__" stroke-width="6"/><text x="200" y="220" font-family="Georgia" font-size="50" font-weight="bold" fill="__BG__" text-anchor="middle">PUNTO 33</text>`,
+        
+        // ELEGANTES Y BOTELLAS (19-24)
+        `<rect width="400" height="400" fill="__BG__"/><path d="M 180 80 L 220 80 L 220 140 L 250 180 L 250 320 L 150 320 L 150 180 L 180 140 Z" fill="none" stroke="__MAIN__" stroke-width="8"/><rect x="150" y="220" width="100" height="60" fill="__SEC__"/><text x="200" y="260" font-family="Arial" font-size="30" font-weight="bold" fill="__BG__" text-anchor="middle">P.33</text>`,
+        `<rect width="400" height="400" fill="__BG__"/><circle cx="200" cy="200" r="130" fill="none" stroke="__MAIN__" stroke-width="2"/><text x="200" y="210" font-family="Brush Script MT, cursive" font-size="90" fill="__MAIN__" text-anchor="middle">Punto</text><text x="200" y="290" font-family="Times New Roman" font-size="80" fill="__TEXT__" text-anchor="middle">33</text>`,
+        `<rect width="400" height="400" fill="__BG__"/><path d="M 160 100 Q 200 80 240 100 L 240 300 Q 200 320 160 300 Z" fill="__MAIN__"/><path d="M 170 120 L 170 280" stroke="__BG__" stroke-width="4"/><text x="215" y="220" font-family="Verdana" font-size="45" font-weight="bold" fill="__BG__" text-anchor="middle" transform="rotate(-90 215 220)">P.33</text>`,
+        `<rect width="400" height="400" fill="__BG__"/><path d="M 150 200 Q 200 100 250 200 Q 200 300 150 200" fill="__MAIN__"/><circle cx="200" cy="200" r="80" fill="none" stroke="__TEXT__" stroke-width="4"/><text x="200" y="220" font-family="Impact" font-size="60" fill="__BG__" text-anchor="middle">33</text>`,
+        `<rect width="400" height="400" fill="__BG__"/><rect x="100" y="100" width="200" height="200" fill="none" stroke="__MAIN__" stroke-width="4"/><rect x="110" y="110" width="180" height="180" fill="none" stroke="__TEXT__" stroke-width="2"/><text x="200" y="225" font-family="Georgia" font-size="80" fill="__MAIN__" text-anchor="middle">33</text>`,
+        `<rect width="400" height="400" fill="__BG__"/><path d="M 200 50 L 350 200 L 200 350 L 50 200 Z" fill="__SEC__" opacity="0.3"/><path d="M 200 80 L 320 200 L 200 320 L 80 200 Z" fill="none" stroke="__MAIN__" stroke-width="6"/><text x="200" y="225" font-family="Arial" font-size="70" font-weight="bold" fill="__TEXT__" text-anchor="middle">P33</text>`,
+
+        // GEOMÉTRICOS Y ABSTRACTOS (25-30)
+        `<rect width="400" height="400" fill="__BG__"/><circle cx="160" cy="200" r="80" fill="__MAIN__" opacity="0.8"/><circle cx="240" cy="200" r="80" fill="__SEC__" opacity="0.8"/><text x="200" y="220" font-family="Arial" font-size="60" font-weight="bold" fill="__BG__" text-anchor="middle">33</text>`,
+        `<rect width="400" height="400" fill="__BG__"/><polygon points="100,300 200,100 300,300" fill="none" stroke="__MAIN__" stroke-width="12"/><polygon points="150,300 200,200 250,300" fill="__SEC__"/><text x="200" y="360" font-family="Verdana" font-size="40" font-weight="bold" fill="__TEXT__" text-anchor="middle">PUNTO 33</text>`,
+        `<rect width="400" height="400" fill="__BG__"/><path d="M 120 120 L 280 120 L 280 280 L 120 280 Z" fill="__MAIN__"/><path d="M 150 150 L 310 150 L 310 310 L 150 310 Z" fill="none" stroke="__TEXT__" stroke-width="6"/><text x="200" y="225" font-family="Impact" font-size="70" fill="__BG__" text-anchor="middle">33</text>`,
+        `<rect width="400" height="400" fill="__BG__"/><path d="M 50 200 Q 125 50 200 200 T 350 200 T 200 200 T 50 200" fill="none" stroke="__MAIN__" stroke-width="8"/><text x="200" y="280" font-family="Georgia" font-size="60" font-weight="bold" fill="__TEXT__" text-anchor="middle">PUNTO 33</text>`,
+        `<rect width="400" height="400" fill="__BG__"/><circle cx="200" cy="200" r="140" fill="none" stroke="__MAIN__" stroke-width="4"/><path d="M 100 200 A 100 100 0 0 1 300 200" fill="none" stroke="__SEC__" stroke-width="15"/><text x="200" y="250" font-family="Arial" font-size="100" font-weight="bold" fill="__TEXT__" text-anchor="middle">33</text>`,
+        `<rect width="400" height="400" fill="__BG__"/><rect x="100" y="100" width="200" height="200" fill="__SEC__"/><circle cx="200" cy="200" r="100" fill="__MAIN__"/><text x="200" y="230" font-family="Impact" font-size="90" fill="__BG__" text-anchor="middle">33</text>`
     ];
 
-    // Plantillas de SVGs (Simplified represention for the loop)
-    function getSvg(index, palette) {
-        const c = colors[palette];
-        // Aquí definimos 30 variantes lógicas basadas en el index
-        let content = '';
-        
-        if (index < 8) { // MINIMALISTAS
-            if (index === 0) content = `<circle cx="200" cy="200" r="150" fill="none" stroke="${c.main}" stroke-width="15"/><text x="200" y="220" font-family="Arial" font-size="120" font-weight="900" fill="${c.text}" text-anchor="middle">33</text>`;
-            if (index === 1) content = `<rect x="50" y="50" width="300" height="300" rx="40" fill="${c.main}"/><text x="200" y="180" font-family="Verdana" font-size="60" fill="${c.bg}" text-anchor="middle">PUNTO</text><text x="200" y="280" font-family="Verdana" font-size="100" font-weight="bold" fill="${c.bg}" text-anchor="middle">33</text>`;
-            if (index === 2) content = `<path d="M100 200 L300 200" stroke="${c.main}" stroke-width="20"/><text x="200" y="160" font-family="Impact" font-size="80" fill="${c.text}" text-anchor="middle">PUNTO</text><text x="200" y="320" font-family="Impact" font-size="120" fill="${c.main}" text-anchor="middle">33</text>`;
-            else content = `<text x="200" y="200" font-family="Arial" font-size="150" font-weight="bold" fill="${c.main}" text-anchor="middle">.33</text>`;
-        } else if (index < 16) { // NOCTURNOS
-            content = `<rect width="400" height="400" fill="${c.bg}"/><text x="200" y="240" font-family="Courier" font-size="90" fill="${c.main}" text-anchor="middle" style="filter:drop-shadow(0 0 10px ${c.main})">P33</text>`;
-        } else { // RESTO
-            content = `<path d="M200 50 L350 300 L50 300 Z" fill="${c.main}" opacity="0.2"/><text x="200" y="250" font-family="Serif" font-size="100" fill="${c.text}" text-anchor="middle">Punto 33</text>`;
-        }
+    const grid = document.getElementById('grid');
 
-        return `<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" id="svg-${index}">${index < 16 && palette !== 'mono' && palette !== 'original' ? `<rect width="400" height="400" fill="${c.bg}"/>` : `<rect width="400" height="400" fill="${c.bg}"/>`}${content}</svg>`;
-    }
-
-    const grid = document.getElementById('logo-grid');
-    let currentIdx = 0;
-
-    categories.forEach(cat => {
-        const title = document.createElement('div');
-        title.className = 'category-title';
-        title.textContent = cat.name;
-        grid.appendChild(title);
-
-        for (let i = 0; i < cat.count; i++) {
-            const idx = currentIdx++;
-            const card = document.createElement('div');
-            card.className = 'logo-card';
-            card.innerHTML = `
-                <div class="preview" id="prev-${idx}">${getSvg(idx, 'original')}</div>
-                <div class="card-info">
-                    <h3>Logo Concepto #${idx + 1}</h3>
+    // Inicializar los 30 logos en el DOM
+    templates.forEach((tpl, index) => {
+        const card = document.createElement('div');
+        card.className = 'logo-card';
+        card.innerHTML = `
+            <div class="preview" id="prev-${index}"></div>
+            <h3 style="margin: 0 0 1rem 0; font-size: 1.1rem;">Logo Concepto #${index + 1}</h3>
+            <div class="controls">
+                <div class="row">
+                    <select id="color-${index}" onchange="updateSvg(${index})" style="flex:1">
+                        <option value="original">🎨 Clásico (Verde)</option>
+                        <option value="dark">🌙 Dark Mode</option>
+                        <option value="gold">🏆 Dorado Premium</option>
+                        <option value="neon">🌈 Neón Night</option>
+                        <option value="mono">🖤 Blanco y Negro</option>
+                    </select>
+                    <select id="scale-${index}">
+                        <option value="2">800px</option>
+                        <option value="4">1600px (HD)</option>
+                        <option value="8">3200px (4K)</option>
+                    </select>
                 </div>
-                <div class="controls">
-                    <div class="row">
-                        <select onchange="updateLogo(${idx}, this.value)" style="flex:1">
-                            <option value="original">🎨 Original</option>
-                            <option value="gold">🏆 Dorado Premium</option>
-                            <option value="neon">🌈 Neón Night</option>
-                            <option value="mono">🖤 B&N</option>
-                        </select>
-                        <select id="scale-${idx}">
-                            <option value="2">800px</option>
-                            <option value="4">1600px</option>
-                            <option value="8">3200px (4K)</option>
-                        </select>
-                    </div>
-                    <button class="primary" onclick="download(${idx})">📥 DESCARGAR PNG</button>
-                </div>
-            `;
-            grid.appendChild(card);
-        }
+                <button onclick="downloadPng(${index})">⬇️ DESCARGAR PNG</button>
+            </div>
+        `;
+        grid.appendChild(card);
+        updateSvg(index); // Render inicial
     });
 
-    function updateLogo(idx, palette) {
-        const container = document.getElementById(`prev-${idx}`);
-        container.innerHTML = getSvg(idx, palette);
-        if (palette === 'gold' || palette === 'neon') container.classList.add('dark-mode');
-        else container.classList.remove('dark-mode');
+    // Función para inyectar los colores en el SVG basado en la selección
+    function updateSvg(index) {
+        const palette = document.getElementById(`color-${index}`).value;
+        const c = palettes[palette];
+        let svgStr = templates[index]
+            .replace(/__BG__/g, c.bg)
+            .replace(/__MAIN__/g, c.main)
+            .replace(/__SEC__/g, c.sec)
+            .replace(/__TEXT__/g, c.text);
+        
+        document.getElementById(`prev-${index}`).innerHTML = 
+            `<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" id="svg-${index}">${svgStr}</svg>`;
     }
 
-    function download(idx) {
-        const svg = document.getElementById(`prev-${idx}`).querySelector('svg');
-        const scale = document.getElementById(`scale-${idx}`).value;
-        const canvas = document.getElementById('conversion-canvas');
+    // Conversión robusta a PNG mediante Canvas
+    function downloadPng(index) {
+        const svgEl = document.getElementById(`svg-${index}`);
+        const scale = parseFloat(document.getElementById(`scale-${index}`).value);
+        const paletteName = document.getElementById(`color-${index}`).value;
+        const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
 
-        const svgData = new XMLSerializer().serializeToString(svg);
+        const svgData = new XMLSerializer().serializeToString(svgEl);
         const img = new Image();
-        const svgBlob = new Blob([svgData], {type: 'image/svg+xml;charset=utf-8'});
+        const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
         const url = URL.createObjectURL(svgBlob);
 
         img.onload = function() {
@@ -237,7 +158,7 @@
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
             
             const link = document.createElement('a');
-            link.download = `Punto33_Logo_${idx+1}_${canvas.width}px.png`;
+            link.download = `Punto33_Logo_${index+1}_${paletteName}_${canvas.width}px.png`;
             link.href = canvas.toDataURL('image/png');
             link.click();
             URL.revokeObjectURL(url);
