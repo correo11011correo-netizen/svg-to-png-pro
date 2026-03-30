@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVG to PNG Pro | Visualizador y Conversor</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            padding: 2rem 1rem;
+            text-align: center;
+            background: linear-gradient(to bottom, #1e293b, #0f172a);
+            border-bottom: 1px solid var(--border);
+        }
+
+        h1 { margin: 0; font-size: 2rem; letter-spacing: -0.025em; }
+        p { color: var(--text-muted); margin-top: 0.5rem; }
+
+        main {
+            flex: 1;
+            max-width: 1200px;
+            margin: 2rem auto;
+            width: 90%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            main { grid-template-columns: 1fr; }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        textarea {
+            width: 100%;
+            height: 300px;
+            background: #000;
+            color: #10b981;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            resize: none;
+            box-sizing: border-box;
+        }
+
+        .preview-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: radial-gradient(var(--border) 1px, transparent 1px);
+            background-size: 20px 20px;
+            border-radius: 8px;
+            min-height: 300px;
+            border: 1px dashed var(--border);
+            overflow: hidden;
+            position: relative;
+        }
+
+        #svg-preview {
+            max-width: 100%;
+            max-height: 400px;
+        }
+
+        .controls {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        button:hover { background: var(--primary-hover); transform: translateY(-1px); }
+        button:active { transform: translateY(0); }
+        button.secondary { background: #334155; }
+        button.secondary:hover { background: #475569; }
+
+        .raw-logs {
+            margin-top: 2rem;
+            background: #000;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: #94a3b8;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+        }
+
+        .log-entry { margin-bottom: 0.25rem; }
+        .log-entry.success { color: #10b981; }
+        .log-entry.error { color: #ef4444; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>SVG to PNG Pro</h1>
+    <p>Visualiza tus iconos y conviértelos instantáneamente</p>
+</header>
+
+<main>
+    <!-- Columna Izquierda: Entrada -->
+    <div class="card">
+        <div class="card-title">⌨️ Código SVG</div>
+        <textarea id="svg-input" placeholder="Pega tu código <svg> aquí..."></textarea>
+        <div class="controls">
+            <button onclick="processSvg()">Actualizar Vista</button>
+            <button class="secondary" onclick="loadExample()">Cargar Ejemplo</button>
+        </div>
+    </div>
+
+    <!-- Columna Derecha: Vista Previa y Exportación -->
+    <div class="card">
+        <div class="card-title">🖼️ Vista Previa</div>
+        <div class="preview-container" id="preview-box">
+            <div id="svg-preview"></div>
+        </div>
+        <div class="controls">
+            <button onclick="downloadPng()" id="download-btn" style="background: #10b981;">
+                📥 Descargar PNG
+            </button>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <label for="scale">Escala:</label>
+                <select id="scale" style="background: var(--card-bg); color: white; border: 1px solid var(--border); padding: 0.5rem;">
+                    <option value="1">1x</option>
+                    <option value="2">2x</option>
+                    <option value="4">4x</option>
+                    <option value="8">8x</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div style="max-width: 1200px; margin: 0 auto 2rem; width: 90%;">
+    <div class="card-title">📋 BLACK BOX / RAW LOGS</div>
+    <div class="raw-logs" id="logs">
+        <div class="log-entry">Sistema listo. Esperando entrada SVG...</div>
+    </div>
+</div>
+
+<canvas id="conversion-canvas" style="display: none;"></canvas>
+
+<script>
+    const svgInput = document.getElementById('svg-input');
+    const svgPreview = document.getElementById('svg-preview');
+    const logsContainer = document.getElementById('logs');
+    const canvas = document.getElementById('conversion-canvas');
+
+    function addLog(message, type = '') {
+        const entry = document.createElement('div');
+        entry.className = `log-entry ${type}`;
+        entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+        logsContainer.prepend(entry);
+    }
+
+    function processSvg() {
+        const rawSvg = svgInput.value.trim();
+        if (!rawSvg) {
+            addLog('Error: El campo está vacío', 'error');
+            return;
+        }
+
+        if (!rawSvg.includes('<svg')) {
+            addLog('Error: Código SVG no válido', 'error');
+            return;
+        }
+
+        svgPreview.innerHTML = rawSvg;
+        addLog('SVG renderizado correctamente', 'success');
+        
+        // Ajustar viewBox si falta
+        const svgEl = svgPreview.querySelector('svg');
+        if (svgEl && !svgEl.getAttribute('viewBox') && svgEl.getAttribute('width') && svgEl.getAttribute('height')) {
+            const w = svgEl.getAttribute('width').replace('px', '');
+            const h = svgEl.getAttribute('height').replace('px', '');
+            svgEl.setAttribute('viewBox', `0 0 ${w} ${h}`);
+            addLog(`ViewBox generado automáticamente: 0 0 ${w} ${h}`);
+        }
+    }
+
+    function loadExample() {
+        const example = `<svg width="200" height="200" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#6366f1" stroke="#4f46e5" stroke-width="2" stroke-linejoin="round"/>
+</svg>`;
+        svgInput.value = example;
+        processSvg();
+    }
+
+    async function downloadPng() {
+        const svgEl = svgPreview.querySelector('svg');
+        if (!svgEl) {
+            addLog('Error: No hay SVG para convertir', 'error');
+            return;
+        }
+
+        addLog('Iniciando conversión a PNG...');
+        
+        const scale = parseFloat(document.getElementById('scale').value);
+        const svgData = new XMLSerializer().serializeToString(svgEl);
+        const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+        const url = URL.createObjectURL(svgBlob);
+
+        const img = new Image();
+        img.onload = function() {
+            // Dimensiones
+            const bbox = svgEl.getBBox();
+            const width = (svgEl.viewBox.baseVal.width || svgEl.width.baseVal.value || bbox.width) * scale;
+            const height = (svgEl.viewBox.baseVal.height || svgEl.height.baseVal.value || bbox.height) * scale;
+
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, width, height);
+            ctx.drawImage(img, 0, 0, width, height);
+
+            const pngUrl = canvas.toDataURL('image/png');
+            const downloadLink = document.createElement('a');
+            downloadLink.href = pngUrl;
+            downloadLink.download = `converted_image_${width}x${height}.png`;
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+
+            URL.revokeObjectURL(url);
+            addLog(`Conversión exitosa: PNG de ${width}x${height}px descargado`, 'success');
+            
+            // Raw Output Log for Transparency
+            console.log('--- RAW CONVERSION DATA ---');
+            console.log(JSON.stringify({
+                timestamp: new Date().toISOString(),
+                source_length: svgData.length,
+                dimensions: { width, height },
+                scale: scale,
+                mime: 'image/png'
+            }, null, 2));
+        };
+
+        img.onerror = function() {
+            addLog('Error al procesar la imagen para la conversión', 'error');
+        };
+
+        img.src = url;
+    }
+
+    // Drag and Drop support
+    const previewBox = document.getElementById('preview-box');
+    previewBox.ondragover = (e) => { e.preventDefault(); previewBox.style.borderColor = 'var(--primary)'; };
+    previewBox.ondragleave = () => { previewBox.style.borderColor = 'var(--border)'; };
+    previewBox.ondrop = (e) => {
+        e.preventDefault();
+        previewBox.style.borderColor = 'var(--border)';
+        const file = e.dataTransfer.files[0];
+        if (file && file.type === 'image/svg+xml') {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                svgInput.value = event.target.result;
+                processSvg();
+            };
+            reader.readAsText(file);
+        }
+    };
+</script>
+
+</body>
+</html>
