@@ -4,7 +4,6 @@ const FULL_Y = 100;  // Tope del vaso
 const RANGE = EMPTY_Y - FULL_Y;
 
 let currentPercent = 0; // 0 a 1
-let activeEngine = 'A';
 
 // ELEMENTOS SVG
 const liquidRect = document.getElementById('liquid-rect');
@@ -22,51 +21,55 @@ function updateFill(percent) {
     const currentY = EMPTY_Y - (RANGE * currentPercent);
     const currentHeight = EMPTY_Y - currentY;
 
-    // MOTOR A & B (Simultáneos para testeo visual en un solo vaso)
-    // 1. Mover el Rectángulo de Líquido
+    // MOTOR A (Path + Rect)
     liquidRect.setAttribute('y', currentY);
     liquidRect.setAttribute('height', currentHeight);
 
-    // 2. Mover la Ola de la superficie
     const waveY = currentY;
     const d = `M 0 ${waveY} Q 100 ${waveY-20} 200 ${waveY} T 400 ${waveY} L 400 400 L 0 400 Z`;
     wavePath.setAttribute('d', d);
 
-    // 3. Mover Hielos (Flotan)
     let iceY = currentY - 25;
-    if (iceY > 320) iceY = 320; // No hundir hielos más allá del fondo
+    if (iceY > 320) iceY = 320; // Límite fondo
     iceGroup.setAttribute('transform', `translate(0, ${iceY})`);
     iceGroup.style.opacity = currentPercent < 0.05 ? '0' : '1';
 }
 
-// Escuchar Scroll
+// 1. ESCUCHAR SCROLL (El usuario baja la página)
 window.addEventListener('scroll', () => {
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    // Esconder texto de pista suavemente
+    const hint = document.querySelector('.scroll-msg');
+    if(window.scrollY > 50 && hint) hint.style.opacity = '0';
+    else if(hint) hint.style.opacity = '1';
+
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    // maxScroll es cuánto puedo bajar en total
+    const maxScroll = document.body.scrollHeight - window.innerHeight;
+    
+    if (maxScroll <= 0) return; // Prevención si no hay barra de scroll
+
     const percent = scrollTop / maxScroll;
     updateFill(percent);
 });
 
-// Escuchar Slider Manual (¡FALLBACK SEGURO!)
+// 2. ESCUCHAR SLIDER (El usuario mueve la barra)
+let isDragging = false;
+
+slider.addEventListener('mousedown', () => isDragging = true);
+slider.addEventListener('touchstart', () => isDragging = true);
+slider.addEventListener('mouseup', () => isDragging = false);
+slider.addEventListener('touchend', () => isDragging = false);
+
 slider.addEventListener('input', (e) => {
     const percent = e.target.value / 100;
-    // Sincronizar el scroll de la página con el slider para que no salte
-    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-    window.scrollTo(0, percent * maxScroll);
     updateFill(percent);
+
+    // Sincronizar el scroll de la página para que, al soltar el slider,
+    // el vaso no "salte" a la posición vieja del scroll.
+    const maxScroll = document.body.scrollHeight - window.innerHeight;
+    window.scrollTo({ top: percent * maxScroll, behavior: 'auto' });
 });
 
-// Cambiar Motores (Para el test solicitado)
-function setEngine(id) {
-    activeEngine = id;
-    document.querySelectorAll('.engine-btn').forEach(btn => btn.classList.remove('active'));
-    document.getElementById(`btn-engine-${id}`).classList.add('active');
-    
-    // Aquí podríamos cambiar técnicas de renderizado, pero por ahora
-    // el Motor A (Path + Rect) es el que estamos viendo en pantalla.
-}
-
-// Descarga PNG
 function downloadPNG() {
     const svg = document.getElementById('main-svg');
     const canvas = document.getElementById('canvas');
@@ -82,12 +85,12 @@ function downloadPNG() {
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
         
         const link = document.createElement('a');
-        link.download = "Punto33_Logo_Custom.png";
+        link.download = "Punto33_Liquid_Engine.png";
         link.href = canvas.toDataURL('image/png');
         link.click();
     };
     img.src = "data:image/svg+xml;charset=utf-8," + encodedData;
 }
 
-// Inicializar en 0
+// Empezar en 0 (Vaso vacío)
 updateFill(0);
