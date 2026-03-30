@@ -7,7 +7,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>Punto 33 | Catálogo Premium de Logos</title>
+    <title>Punto 33 | Logo Lab Ultra-HD</title>
     <style>
         :root {
             --bg: #020617; --card-bg: #0f172a; --text: #f8fafc;
@@ -21,8 +21,8 @@
         .container { max-width: 1400px; margin: 0 auto 2rem; padding: 0 2rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2.5rem; }
         .logo-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; display: flex; flex-direction: column; transition: transform 0.3s; }
         .logo-card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
-        .preview { background: #fff; border-radius: 12px; height: 260px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; overflow: hidden; position: relative; }
-        .preview svg { width: 100%; height: 100%; max-width: 260px; }
+        .preview { background: #fff; border-radius: 12px; height: 280px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; overflow: hidden; position: relative; }
+        .preview svg { width: 100%; height: 100%; max-width: 280px; }
         .controls { display: flex; flex-direction: column; gap: 0.8rem; margin-top: auto; }
         .row { display: flex; gap: 0.5rem; }
         select, button { padding: 0.6rem; border-radius: 8px; border: 1px solid var(--border); background: #1e293b; color: #fff; font-size: 0.9rem; cursor: pointer; }
@@ -34,8 +34,8 @@
 <body>
 
 <header>
-    <h1>Punto 33 | Logo Lab</h1>
-    <p>30 Diseños Altamente Detallados de Bebidas. Personaliza y Descarga.</p>
+    <h1>Punto 33 | Logo Lab Ultra-HD</h1>
+    <p>30 Diseños de Alta Definición. Especialistas en Chapas, Latas y Botellas Detalladas.</p>
 </header>
 
 <div id="grid-container"></div>
@@ -51,77 +51,247 @@
     };
 
     const categories = [
-        { name: "Cervezas & Clásicos", start: 0, end: 7 },
-        { name: "Vinos & Coctelería", start: 8, end: 15 },
-        { name: "Vintage & Destilados", start: 16, end: 23 },
-        { name: "Premium & Abstractos", start: 24, end: 29 }
+        { name: "Chapas (Crown Caps) 3D", start: 0, end: 9 },
+        { name: "Tapas de Lata (Can Tops)", start: 10, end: 19 },
+        { name: "Botellas & Cristal HD", start: 20, end: 29 }
     ];
 
-    // 30 SVGs MUY detallados. Variables: __BG__, __MAIN__, __SEC__, __HL__, __TEXT__
+    // Función para generar los puntos de una chapita corona
+    function getCrownPath(cx, cy, r, points) {
+        let path = "";
+        for (let i = 0; i < points * 2; i++) {
+            let angle = (i * Math.PI) / points;
+            let currR = i % 2 === 0 ? r : r + 15;
+            let x = cx + currR * Math.cos(angle);
+            let y = cy + currR * Math.sin(angle);
+            path += (i === 0 ? "M" : "L") + x + "," + y;
+        }
+        return path + "Z";
+    }
+
     const templates = [
-        // 0: Pinta de cerveza detallada con espuma cayendo
-        `<rect width="400" height="400" fill="__BG__"/><path d="M 140 160 L 140 320 A 20 20 0 0 0 160 340 L 240 340 A 20 20 0 0 0 260 320 L 260 160" fill="none" stroke="__MAIN__" stroke-width="12" stroke-linecap="round"/><path d="M 260 200 A 35 35 0 0 1 305 235 L 305 265 A 35 35 0 0 1 260 300" fill="none" stroke="__MAIN__" stroke-width="12" stroke-linecap="round"/><rect x="155" y="180" width="90" height="145" fill="__SEC__" opacity="0.3" rx="10"/><line x1="175" y1="200" x2="175" y2="320" stroke="__BG__" stroke-width="8" opacity="0.5" stroke-linecap="round"/><path d="M 125 160 Q 150 110 180 140 T 220 120 T 275 160 Q 280 190 260 190 Q 240 220 230 190 Z" fill="__MAIN__"/><circle cx="180" cy="270" r="4" fill="__MAIN__"/><circle cx="200" cy="230" r="6" fill="__MAIN__"/><circle cx="220" cy="290" r="5" fill="__MAIN__"/><text x="200" y="270" font-family="Impact" font-size="50" fill="__TEXT__" text-anchor="middle">33</text>`,
-        // 1: Lata de cerveza artesanal
-        `<rect width="400" height="400" fill="__BG__"/><rect x="130" y="100" width="140" height="220" rx="15" fill="none" stroke="__MAIN__" stroke-width="10"/><path d="M 130 130 L 270 130 M 130 290 L 270 290" stroke="__MAIN__" stroke-width="10"/><path d="M 170 100 Q 200 85 230 100" fill="none" stroke="__MAIN__" stroke-width="6"/><rect x="185" y="80" width="30" height="15" fill="__MAIN__" rx="5"/><polygon points="140,150 260,150 230,270 170,270" fill="__SEC__" opacity="0.2"/><text x="200" y="210" font-family="Arial" font-size="25" font-weight="bold" fill="__TEXT__" text-anchor="middle">PUNTO</text><text x="200" y="250" font-family="Impact" font-size="55" fill="__MAIN__" text-anchor="middle">33</text>`,
-        // 2: Dos chopps chocando (Brindis)
-        `<rect width="400" height="400" fill="__BG__"/><g transform="translate(-30, 0)"><path d="M 180 180 L 160 300 A 10 10 0 0 0 170 315 L 220 325 A 10 10 0 0 0 235 310 L 240 180" fill="none" stroke="__MAIN__" stroke-width="8"/><path d="M 160 220 A 25 25 0 0 0 120 250 L 130 280 A 25 25 0 0 0 165 285" fill="none" stroke="__MAIN__" stroke-width="8"/><path d="M 170 180 Q 200 150 240 180" fill="__SEC__"/></g><g transform="translate(30, 0) scale(-1, 1) translate(-400, 0)"><path d="M 180 180 L 160 300 A 10 10 0 0 0 170 315 L 220 325 A 10 10 0 0 0 235 310 L 240 180" fill="none" stroke="__MAIN__" stroke-width="8"/><path d="M 160 220 A 25 25 0 0 0 120 250 L 130 280 A 25 25 0 0 0 165 285" fill="none" stroke="__MAIN__" stroke-width="8"/><path d="M 170 180 Q 200 150 240 180" fill="__SEC__"/></g><path d="M 200 130 L 200 170 M 180 140 L 160 160 M 220 140 L 240 160" stroke="__HL__" stroke-width="4" stroke-linecap="round"/><text x="200" y="100" font-family="Georgia" font-size="40" font-weight="bold" fill="__TEXT__" text-anchor="middle">PUNTO 33</text>`,
-        // 3: Botella de cerveza con chapa y gotas de frío
-        `<rect width="400" height="400" fill="__BG__"/><path d="M 180 80 L 220 80 L 220 150 C 220 180 260 200 260 240 L 260 340 A 10 10 0 0 1 250 350 L 150 350 A 10 10 0 0 1 140 340 L 140 240 C 140 200 180 180 180 150 Z" fill="none" stroke="__MAIN__" stroke-width="10"/><rect x="175" y="65" width="50" height="15" rx="5" fill="__SEC__"/><path d="M 155 250 L 245 250 L 245 320 L 155 320 Z" fill="__SEC__" opacity="0.1"/><line x1="165" y1="260" x2="235" y2="260" stroke="__MAIN__" stroke-width="4"/><circle cx="170" cy="220" r="3" fill="__HL__"/><circle cx="230" cy="200" r="4" fill="__HL__"/><circle cx="160" cy="290" r="3" fill="__HL__"/><circle cx="240" cy="330" r="4" fill="__HL__"/><text x="200" y="300" font-family="Arial" font-size="35" font-weight="bold" fill="__TEXT__" text-anchor="middle">33</text>`,
-        // 4: Lúpulo detallado (Cerveza artesanal)
-        `<rect width="400" height="400" fill="__BG__"/><path d="M 200 60 Q 280 140 200 320 Q 120 140 200 60 Z" fill="none" stroke="__MAIN__" stroke-width="10"/><path d="M 200 60 Q 240 120 200 200 Q 160 120 200 60 Z" fill="__SEC__" opacity="0.4"/><path d="M 200 140 Q 260 220 200 300 Q 140 220 200 140 Z" fill="__SEC__" opacity="0.6"/><path d="M 200 220 Q 230 270 200 320 Q 170 270 200 220 Z" fill="__MAIN__"/><path d="M 180 60 Q 200 20 250 40" fill="none" stroke="__MAIN__" stroke-width="8" stroke-linecap="round"/><text x="200" y="360" font-family="Courier New" font-size="40" font-weight="bold" fill="__TEXT__" text-anchor="middle">PUNTO 33</text>`,
-        // 5: Tapa corona (Chapita de cerveza)
-        `<rect width="400" height="400" fill="__BG__"/><path d="M 200 70 L 225 90 L 255 75 L 270 100 L 300 95 L 305 125 L 330 135 L 320 165 L 340 185 L 320 215 L 330 245 L 305 255 L 300 285 L 270 280 L 255 305 L 225 290 L 200 310 L 175 290 L 145 305 L 130 280 L 100 285 L 95 255 L 70 245 L 80 215 L 60 185 L 80 165 L 70 135 L 95 125 L 100 95 L 130 100 L 145 75 L 175 90 Z" fill="__SEC__" opacity="0.1" stroke="__MAIN__" stroke-width="8" stroke-linejoin="round"/><circle cx="200" cy="190" r="90" fill="none" stroke="__MAIN__" stroke-width="4" stroke-dasharray="8 8"/><text x="200" y="170" font-family="Arial" font-size="30" font-weight="bold" fill="__TEXT__" text-anchor="middle">PUNTO</text><text x="200" y="240" font-family="Impact" font-size="80" fill="__MAIN__" text-anchor="middle">33</text>`,
-        // 6: Barril de roble cervecero
-        `<rect width="400" height="400" fill="__BG__"/><path d="M 120 100 Q 80 200 120 300 L 280 300 Q 320 200 280 100 Z" fill="none" stroke="__MAIN__" stroke-width="10"/><path d="M 150 100 Q 120 200 150 300 M 200 100 L 200 300 M 250 100 Q 280 200 250 300" fill="none" stroke="__MAIN__" stroke-width="4"/><line x1="105" y1="140" x2="295" y2="140" stroke="__SEC__" stroke-width="12"/><line x1="95" y1="200" x2="305" y2="200" stroke="__SEC__" stroke-width="12"/><line x1="105" y1="260" x2="295" y2="260" stroke="__SEC__" stroke-width="12"/><rect x="170" y="170" width="60" height="60" rx="30" fill="__BG__" stroke="__MAIN__" stroke-width="6"/><text x="200" y="210" font-family="Georgia" font-size="30" font-weight="bold" fill="__TEXT__" text-anchor="middle">33</text>`,
-        // 7: Escudo cervecero clásico con espigas
-        `<rect width="400" height="400" fill="__BG__"/><path d="M 100 80 L 300 80 L 300 180 C 300 280 200 340 200 340 C 200 340 100 280 100 180 Z" fill="none" stroke="__MAIN__" stroke-width="10"/><path d="M 115 95 L 285 95 L 285 180 C 285 260 200 310 200 310 C 200 310 115 260 115 180 Z" fill="__SEC__" opacity="0.2"/><path d="M 60 200 Q 100 150 100 200 Q 60 250 60 200 M 340 200 Q 300 150 300 200 Q 340 250 340 200" fill="__MAIN__"/><text x="200" y="170" font-family="Times New Roman" font-size="40" font-weight="bold" fill="__TEXT__" text-anchor="middle">PUNTO</text><text x="200" y="260" font-family="Georgia" font-size="90" font-weight="bold" fill="__MAIN__" text-anchor="middle">33</text>`,
+        // --- CATEGORÍA 1: CHAPAS DE CERVEZA (0-9) ---
+        // 0: Chapa frontal HD con relieves
+        `<rect width="400" height="400" fill="__BG__"/>
+         <path d="${getCrownPath(200, 200, 140, 21)}" fill="__SEC__" stroke="__MAIN__" stroke-width="4"/>
+         <circle cx="200" cy="200" r="130" fill="none" stroke="__MAIN__" stroke-width="2" opacity="0.5"/>
+         <circle cx="200" cy="200" r="110" fill="__MAIN__" opacity="0.1"/>
+         <text x="200" y="180" font-family="Arial Black" font-size="25" fill="__TEXT__" text-anchor="middle">PUNTO</text>
+         <text x="200" y="260" font-family="Impact" font-size="100" fill="__MAIN__" text-anchor="middle">33</text>
+         <path d="M 120 150 Q 150 120 200 120" fill="none" stroke="__BG__" stroke-width="6" stroke-linecap="round" opacity="0.6"/>`,
         
-        // 8: Copa de vino elegante con onda de líquido
-        `<rect width="400" height="400" fill="__BG__"/><path d="M 130 100 Q 130 250 200 250 Q 270 250 270 100 Z" fill="none" stroke="__MAIN__" stroke-width="10"/><line x1="200" y1="250" x2="200" y2="340" stroke="__MAIN__" stroke-width="10"/><line x1="150" y1="340" x2="250" y2="340" stroke="__MAIN__" stroke-width="10" stroke-linecap="round"/><path d="M 140 160 Q 170 180 200 160 T 260 160 Q 260 230 200 240 Q 140 230 140 160 Z" fill="__SEC__" opacity="0.6"/><path d="M 150 120 Q 150 180 180 220" fill="none" stroke="__BG__" stroke-width="4" stroke-linecap="round"/><text x="200" y="70" font-family="Arial" font-size="40" font-weight="bold" fill="__TEXT__" text-anchor="middle">PUNTO 33</text>`,
-        // 9: Copa Martini de Neón con aceituna
-        `<rect width="400" height="400" fill="__BG__"/><path d="M 100 100 L 200 220 L 300 100 Z" fill="none" stroke="__MAIN__" stroke-width="10" stroke-linejoin="round"/><line x1="200" y1="220" x2="200" y2="320" stroke="__MAIN__" stroke-width="10"/><line x1="140" y1="320" x2="260" y2="320" stroke="__MAIN__" stroke-width="10" stroke-linecap="round"/><line x1="220" y1="80" x2="180" y2="160" stroke="__SEC__" stroke-width="4"/><circle cx="180" cy="160" r="15" fill="__HL__"/><circle cx="180" cy="160" r="4" fill="__BG__"/><path d="M 125 130 L 275 130 L 200 210 Z" fill="__MAIN__" opacity="0.3"/><text x="200" y="370" font-family="Courier New" font-size="40" font-weight="bold" fill="__TEXT__" text-anchor="middle">P.33</text>`,
-        // 10: Vaso de Trago Largo (Mojito/Gin) con hielo y limón
-        `<rect width="400" height="400" fill="__BG__"/><path d="M 140 100 L 150 320 A 10 10 0 0 0 160 330 L 240 330 A 10 10 0 0 0 250 320 L 260 100" fill="none" stroke="__MAIN__" stroke-width="10"/><rect x="160" y="240" width="40" height="40" rx="5" fill="__SEC__" opacity="0.4" transform="rotate(15 180 260)"/><rect x="200" y="190" width="45" height="45" rx="5" fill="__SEC__" opacity="0.4" transform="rotate(-10 220 210)"/><rect x="155" y="150" width="35" height="35" rx="5" fill="__SEC__" opacity="0.4" transform="rotate(25 170 170)"/><circle cx="260" cy="100" r="30" fill="none" stroke="__HL__" stroke-width="8"/><line x1="260" y1="70" x2="260" y2="100" stroke="__HL__" stroke-width="4"/><line x1="170" y1="70" x2="220" y2="300" stroke="__MAIN__" stroke-width="6" stroke-linecap="round"/><text x="100" y="220" font-family="Impact" font-size="50" fill="__TEXT__" transform="rotate(-90 100 220)">PUNTO 33</text>`,
-        // 11: Coctelera Profesional (Shaker)
-        `<rect width="400" height="400" fill="__BG__"/><path d="M 160 160 L 170 320 A 20 20 0 0 0 190 340 L 210 340 A 20 20 0 0 0 230 320 L 240 160 Z" fill="none" stroke="__MAIN__" stroke-width="10"/><path d="M 155 160 L 245 160 L 230 100 L 170 100 Z" fill="__SEC__" opacity="0.3" stroke="__MAIN__" stroke-width="8" stroke-linejoin="round"/><path d="M 185 100 L 215 100 L 210 70 L 190 70 Z" fill="__MAIN__"/><path d="M 180 180 Q 200 300 220 180" fill="none" stroke="__HL__" stroke-width="4"/><text x="100" y="220" font-family="Verdana" font-size="60" font-weight="bold" fill="__TEXT__" transform="rotate(-90 100 220)">33</text>`,
-        // 12: Copa Margarita con sal
-        `<rect width="400" height="400" fill="__BG__"/><path d="M 100 120 Q 200 240 200 260 L 200 340 M 140 340 L 260 340" fill="none" stroke="__MAIN__" stroke-width="10" stroke-linecap="round"/><path d="M 300 120 Q 200 240 200 260" fill="none" stroke="__MAIN__" stroke-width="10"/><path d="M 120 140 Q 200 220 280 140 Z" fill="__SEC__" opacity="0.4"/><line x1="90" y1="120" x2="310" y2="120" stroke="__TEXT__" stroke-width="4" stroke-dasharray="4 6" stroke-linecap="round"/><text x="200" y="80" font-family="Georgia" font-size="45" font-weight="bold" fill="__MAIN__" text-anchor="middle">P.33</text>`,
-        // 13: Botella de Vino y Copa
-        `<rect width="400" height="400" fill="__BG__"/><path d="M 140 80 L 160 80 L 160 140 C 160 170 180 180 180 220 L 180 340 L 120 340 L 120 220 C 120 180 140 170 140 140 Z" fill="none" stroke="__MAIN__" stroke-width="8"/><rect x="130" y="240" width="40" height="60" fill="__SEC__" opacity="0.2"/><path d="M 240 180 Q 240 260 270 260 Q 300 260 300 180 Z" fill="none" stroke="__MAIN__" stroke-width="6"/><line x1="270" y1="260" x2="270" y2="340" stroke="__MAIN__" stroke-width="6"/><line x1="240" y1="340" x2="300" y2="340" stroke="__MAIN__" stroke-width="6"/><path d="M 245 220 Q 270 230 295 220 Q 295 255 270 255 Q 245 255 245 220 Z" fill="__MAIN__" opacity="0.6"/><text x="200" y="50" font-family="Times New Roman" font-size="40" font-weight="bold" fill="__TEXT__" text-anchor="middle">PUNTO 33</text>`,
-        // 14: Neón Sign de Trago Tropical
-        `<rect width="400" height="400" fill="__BG__"/><path d="M 150 140 L 160 300 Q 200 320 240 300 L 250 140" fill="none" stroke="__MAIN__" stroke-width="8"/><path d="M 155 180 Q 200 200 245 180" fill="none" stroke="__SEC__" stroke-width="6"/><path d="M 160 240 Q 200 260 240 240" fill="none" stroke="__SEC__" stroke-width="6"/><line x1="170" y1="100" x2="190" y2="300" stroke="__HL__" stroke-width="8" stroke-linecap="round"/><path d="M 250 140 Q 280 100 240 100 Z" fill="none" stroke="__MAIN__" stroke-width="6"/><text x="200" y="360" font-family="Courier New" font-size="50" font-weight="bold" fill="__MAIN__" text-anchor="middle">33</text>`,
-        // 15: Chupito / Shot Flameado
-        `<rect width="400" height="400" fill="__BG__"/><path d="M 160 200 L 170 320 L 230 320 L 240 200 Z" fill="none" stroke="__MAIN__" stroke-width="10" stroke-linejoin="round"/><path d="M 165 240 L 235 240 L 230 310 L 170 310 Z" fill="__SEC__" opacity="0.5"/><path d="M 200 120 Q 230 150 200 200 Q 170 150 200 120" fill="__HL__"/><path d="M 200 140 Q 215 160 200 190 Q 185 160 200 140" fill="__BG__"/><text x="200" y="90" font-family="Arial" font-size="60" font-weight="bold" fill="__TEXT__" text-anchor="middle">P.33</text>`,
+        // 1: Chapa con degradado metálico circular
+        `<rect width="400" height="400" fill="__BG__"/>
+         <path d="${getCrownPath(200, 200, 140, 21)}" fill="__MAIN__"/>
+         <circle cx="200" cy="200" r="130" fill="__SEC__" opacity="0.2"/>
+         <circle cx="200" cy="200" r="115" fill="none" stroke="__BG__" stroke-width="2"/>
+         <path d="M 100 200 A 100 100 0 0 1 300 200" fill="none" stroke="__BG__" stroke-width="8" stroke-linecap="round"/>
+         <text x="200" y="260" font-family="Arial" font-size="110" font-weight="900" fill="__BG__" text-anchor="middle">33</text>`,
 
-        // 16: Vaso de Whisky en las Rocas (Tumbler)
-        `<rect width="400" height="400" fill="__BG__"/><path d="M 120 140 L 140 320 A 10 10 0 0 0 150 330 L 250 330 A 10 10 0 0 0 260 320 L 280 140" fill="none" stroke="__MAIN__" stroke-width="12"/><line x1="145" y1="300" x2="255" y2="300" stroke="__MAIN__" stroke-width="10"/><rect x="155" y="200" width="50" height="50" rx="8" fill="__SEC__" opacity="0.4" transform="rotate(10 180 225)"/><rect x="195" y="240" width="50" height="50" rx="8" fill="__SEC__" opacity="0.4" transform="rotate(-15 220 265)"/><path d="M 130 220 Q 200 200 270 220 L 260 290 L 140 290 Z" fill="__MAIN__" opacity="0.3"/><text x="200" y="100" font-family="Georgia" font-size="60" font-weight="bold" fill="__TEXT__" text-anchor="middle">P.33</text>`,
-        // 17: Decantador de Cristal (Diamante)
-        `<rect width="400" height="400" fill="__BG__"/><polygon points="200,80 230,120 220,160 280,240 240,340 160,340 120,240 180,160 170,120" fill="none" stroke="__MAIN__" stroke-width="8"/><polygon points="180,160 220,160 280,240 120,240" fill="__SEC__" opacity="0.1"/><polygon points="120,240 280,240 240,340 160,340" fill="__MAIN__" opacity="0.4"/><polygon points="160,340 240,340 200,280" fill="__BG__" opacity="0.5"/><rect x="185" y="50" width="30" height="30" fill="__SEC__"/><text x="200" y="230" font-family="Arial" font-size="40" font-weight="bold" fill="__TEXT__" text-anchor="middle">33</text>`,
-        // 18: Botellas Cruzadas (Estilo Jolly Roger)
-        `<rect width="400" height="400" fill="__BG__"/><g transform="rotate(45 200 200)"><path d="M 180 80 L 220 80 L 220 140 C 220 160 240 180 240 220 L 240 320 L 160 320 L 160 220 C 160 180 180 160 180 140 Z" fill="none" stroke="__MAIN__" stroke-width="8"/><rect x="170" y="200" width="60" height="80" fill="__SEC__" opacity="0.2"/></g><g transform="rotate(-45 200 200)"><path d="M 180 80 L 220 80 L 220 140 C 220 160 240 180 240 220 L 240 320 L 160 320 L 160 220 C 160 180 180 160 180 140 Z" fill="__BG__" stroke="__MAIN__" stroke-width="8"/><rect x="170" y="200" width="60" height="80" fill="__SEC__" opacity="0.2"/></g><circle cx="200" cy="200" r="45" fill="__BG__" stroke="__MAIN__" stroke-width="6"/><text x="200" y="215" font-family="Impact" font-size="45" fill="__TEXT__" text-anchor="middle">33</text>`,
-        // 19: Etiqueta Vintage de Licor
-        `<rect width="400" height="400" fill="__BG__"/><rect x="80" y="60" width="240" height="280" rx="20" fill="none" stroke="__MAIN__" stroke-width="12"/><rect x="100" y="80" width="200" height="240" rx="10" fill="none" stroke="__SEC__" stroke-width="4"/><path d="M 100 150 Q 200 200 300 150" fill="none" stroke="__MAIN__" stroke-width="4"/><path d="M 100 250 Q 200 200 300 250" fill="none" stroke="__MAIN__" stroke-width="4"/><text x="200" y="130" font-family="Georgia" font-size="30" font-weight="bold" fill="__TEXT__" text-anchor="middle">PREMIUM</text><text x="200" y="220" font-family="Impact" font-size="80" fill="__MAIN__" text-anchor="middle">33</text><text x="200" y="290" font-family="Georgia" font-size="25" fill="__TEXT__" text-anchor="middle">EST. 2024</text>`,
-        // 20: Taza de Café / Trago Caliente Moderno
-        `<rect width="400" height="400" fill="__BG__"/><path d="M 120 140 L 280 140 L 250 320 A 20 20 0 0 1 230 340 L 170 340 A 20 20 0 0 1 150 320 Z" fill="none" stroke="__MAIN__" stroke-width="12"/><path d="M 280 180 A 30 30 0 0 1 320 210 L 320 230 A 30 30 0 0 1 270 260" fill="none" stroke="__MAIN__" stroke-width="12"/><path d="M 160 90 Q 180 50 200 90 T 240 90" fill="none" stroke="__SEC__" stroke-width="8" stroke-linecap="round"/><text x="200" y="260" font-family="Arial" font-size="60" font-weight="bold" fill="__TEXT__" text-anchor="middle">33</text>`,
-        // 21: Burbujas Abstractas (Soda / Gaseosa)
-        `<rect width="400" height="400" fill="__BG__"/><circle cx="200" cy="200" r="140" fill="none" stroke="__MAIN__" stroke-width="10"/><circle cx="160" cy="260" r="30" fill="__SEC__" opacity="0.5"/><circle cx="240" cy="140" r="45" fill="__MAIN__" opacity="0.3"/><circle cx="130" cy="140" r="15" fill="__HL__"/><circle cx="260" cy="250" r="20" fill="__HL__"/><circle cx="200" cy="80" r="10" fill="__MAIN__"/><text x="200" y="225" font-family="Impact" font-size="80" fill="__TEXT__" text-anchor="middle">33</text>`,
-        // 22: Corona y Copa (Rey de las Bebidas)
-        `<rect width="400" height="400" fill="__BG__"/><path d="M 140 160 L 160 80 L 200 120 L 240 80 L 260 160 Z" fill="__SEC__" opacity="0.3" stroke="__MAIN__" stroke-width="8" stroke-linejoin="round"/><path d="M 150 180 Q 150 260 200 280 Q 250 260 250 180 Z" fill="none" stroke="__MAIN__" stroke-width="10"/><line x1="200" y1="280" x2="200" y2="340" stroke="__MAIN__" stroke-width="10"/><line x1="160" y1="340" x2="240" y2="340" stroke="__MAIN__" stroke-width="10" stroke-linecap="round"/><text x="200" y="240" font-family="Georgia" font-size="40" font-weight="bold" fill="__TEXT__" text-anchor="middle">33</text>`,
-        // 23: Vaso de Soda con Sorbete
-        `<rect width="400" height="400" fill="__BG__"/><path d="M 140 140 L 160 340 L 240 340 L 260 140 Z" fill="none" stroke="__MAIN__" stroke-width="10"/><line x1="120" y1="140" x2="280" y2="140" stroke="__MAIN__" stroke-width="10" stroke-linecap="round"/><path d="M 230 140 L 270 60 L 290 60" fill="none" stroke="__HL__" stroke-width="10" stroke-linecap="round"/><path d="M 150 220 L 250 220 L 245 330 L 155 330 Z" fill="__SEC__" opacity="0.3"/><text x="200" y="300" font-family="Arial" font-size="60" font-weight="bold" fill="__TEXT__" text-anchor="middle">33</text>`,
+        // 2: Chapa estilo retro con bordes definidos
+        `<rect width="400" height="400" fill="__BG__"/>
+         <path d="${getCrownPath(200, 200, 145, 21)}" fill="__SEC__"/>
+         <circle cx="200" cy="200" r="135" fill="__MAIN__"/>
+         <circle cx="200" cy="200" r="120" fill="__BG__"/>
+         <text x="200" y="215" font-family="Impact" font-size="140" fill="__MAIN__" text-anchor="middle">33</text>
+         <circle cx="200" cy="200" r="110" fill="none" stroke="__MAIN__" stroke-width="2" stroke-dasharray="10 5"/>`,
 
-        // 24: Splash de Líquido formando el logo
-        `<rect width="400" height="400" fill="__BG__"/><path d="M 100 250 Q 150 100 200 250 T 300 250 Q 250 350 200 250 T 100 250 Z" fill="__MAIN__" opacity="0.8"/><circle cx="150" cy="150" r="15" fill="__SEC__"/><circle cx="280" cy="180" r="10" fill="__HL__"/><circle cx="220" cy="120" r="20" fill="__MAIN__"/><text x="200" y="275" font-family="Impact" font-size="80" fill="__BG__" text-anchor="middle">33</text>`,
-        // 25: Botella Geométrica Minimalista
-        `<rect width="400" height="400" fill="__BG__"/><polygon points="180,60 220,60 220,120 260,180 260,340 140,340 140,180 180,120" fill="none" stroke="__MAIN__" stroke-width="10"/><polygon points="140,240 260,240 260,340 140,340" fill="__SEC__" opacity="0.3"/><text x="200" y="200" font-family="Verdana" font-size="25" font-weight="bold" fill="__TEXT__" text-anchor="middle">PUNTO</text><text x="200" y="310" font-family="Arial" font-size="60" font-weight="bold" fill="__MAIN__" text-anchor="middle">33</text>`,
-        // 26: Rombo Premium con Iniciales
-        `<rect width="400" height="400" fill="__BG__"/><polygon points="200,40 340,200 200,360 60,200" fill="none" stroke="__MAIN__" stroke-width="12"/><polygon points="200,60 320,200 200,340 80,200" fill="none" stroke="__SEC__" stroke-width="4"/><text x="200" y="180" font-family="Georgia" font-size="50" font-weight="bold" fill="__TEXT__" text-anchor="middle">PUNTO</text><text x="200" y="270" font-family="Impact" font-size="90" fill="__MAIN__" text-anchor="middle">33</text>`,
-        // 27: Botella de Champagne Premium
-        `<rect width="400" height="400" fill="__BG__"/><path d="M 170 60 L 230 60 L 230 90 L 180 160 L 180 340 L 120 340 L 120 160 L 170 90 Z" fill="__MAIN__" transform="translate(30, 0)"/><path d="M 170 60 L 230 60 L 230 120 L 170 120 Z" fill="__HL__" transform="translate(30, 0)"/><circle cx="120" cy="180" r="8" fill="__SEC__"/><circle cx="100" cy="220" r="12" fill="__SEC__"/><circle cx="140" cy="260" r="6" fill="__SEC__"/><text x="200" y="280" font-family="Times New Roman" font-size="45" font-weight="bold" fill="__BG__" text-anchor="middle">33</text>`,
-        // 28: Emblema Hexagonal Cervecero
-        `<rect width="400" height="400" fill="__BG__"/><polygon points="200,50 330,125 330,275 200,350 70,275 70,125" fill="none" stroke="__MAIN__" stroke-width="12"/><path d="M 140 170 Q 200 280 260 170" fill="none" stroke="__SEC__" stroke-width="8"/><text x="200" y="150" font-family="Arial" font-size="30" font-weight="bold" fill="__TEXT__" text-anchor="middle">PUNTO</text><text x="200" y="250" font-family="Impact" font-size="90" fill="__MAIN__" text-anchor="middle">33</text>`,
-        // 29: Cinta Líquida (Monograma Fluido)
-        `<rect width="400" height="400" fill="__BG__"/><path d="M 100 200 C 100 100 300 100 300 200 C 300 300 100 300 200 300 C 250 300 250 200 200 200" fill="none" stroke="__MAIN__" stroke-width="20" stroke-linecap="round"/><path d="M 120 200 C 120 120 280 120 280 200 C 280 280 120 280 200 280" fill="none" stroke="__SEC__" stroke-width="8"/><text x="200" y="220" font-family="Arial" font-size="60" font-weight="bold" fill="__BG__" text-anchor="middle">33</text>`
+        // 3: Chapa de perfil (3D)
+        `<rect width="400" height="400" fill="__BG__"/>
+         <ellipse cx="200" cy="220" rx="150" ry="60" fill="__SEC__"/>
+         <ellipse cx="200" cy="200" rx="150" ry="60" fill="__MAIN__" stroke="__BG__" stroke-width="4"/>
+         <text x="200" y="215" font-family="Impact" font-size="80" fill="__BG__" text-anchor="middle">PUNTO 33</text>`,
+
+        // 4: Chapa con estrella central
+        `<rect width="400" height="400" fill="__BG__"/>
+         <path d="${getCrownPath(200, 200, 140, 21)}" fill="__SEC__"/>
+         <polygon points="200,70 230,150 310,150 245,200 270,280 200,230 130,280 155,200 90,150 170,150" fill="__MAIN__"/>
+         <text x="200" y="215" font-family="Arial Black" font-size="60" fill="__BG__" text-anchor="middle">33</text>`,
+
+        // 5: Chapa destapada (Doblada)
+        `<rect width="400" height="400" fill="__BG__"/>
+         <path d="M 80 200 Q 100 100 200 100 Q 300 100 320 200 Q 250 250 200 220 Q 150 250 80 200" fill="__MAIN__" stroke="__SEC__" stroke-width="8"/>
+         <text x="200" y="170" font-family="Impact" font-size="80" fill="__BG__" text-anchor="middle">33</text>`,
+
+        // 6: Chapa con relieve de diamante
+        `<rect width="400" height="400" fill="__BG__"/>
+         <path d="${getCrownPath(200, 200, 140, 21)}" fill="__MAIN__"/>
+         <rect x="130" y="130" width="140" height="140" transform="rotate(45 200 200)" fill="__BG__"/>
+         <text x="200" y="235" font-family="Arial Black" font-size="90" fill="__MAIN__" text-anchor="middle">33</text>`,
+
+        // 7: Chapa con burbujas de condensación
+        `<rect width="400" height="400" fill="__BG__"/>
+         <path d="${getCrownPath(200, 200, 140, 21)}" fill="__SEC__"/>
+         <circle cx="120" cy="150" r="8" fill="__HL__" opacity="0.6"/>
+         <circle cx="280" cy="120" r="12" fill="__HL__" opacity="0.4"/>
+         <circle cx="250" cy="280" r="6" fill="__HL__" opacity="0.7"/>
+         <text x="200" y="225" font-family="Impact" font-size="130" fill="__MAIN__" text-anchor="middle">33</text>`,
+
+        // 8: Chapa estilo Premium Gold (Doble borde)
+        `<rect width="400" height="400" fill="__BG__"/>
+         <path d="${getCrownPath(200, 200, 150, 21)}" fill="__MAIN__"/>
+         <path d="${getCrownPath(200, 200, 130, 21)}" fill="__SEC__"/>
+         <circle cx="200" cy="200" r="110" fill="__MAIN__"/>
+         <text x="200" y="230" font-family="Georgia" font-size="100" font-weight="bold" fill="__BG__" text-anchor="middle">33</text>`,
+
+        // 9: Chapa con rayos de sol (Sunburst)
+        `<rect width="400" height="400" fill="__BG__"/>
+         <path d="${getCrownPath(200, 200, 140, 21)}" fill="__SEC__"/>
+         <g opacity="0.3">
+            <line x1="200" y1="200" x2="200" y2="50" stroke="__HL__" stroke-width="20"/>
+            <line x1="200" y1="200" x2="350" y2="200" stroke="__HL__" stroke-width="20"/>
+            <line x1="200" y1="200" x2="200" y2="350" stroke="__HL__" stroke-width="20"/>
+            <line x1="200" y1="200" x2="50" y2="200" stroke="__HL__" stroke-width="20"/>
+         </g>
+         <text x="200" y="240" font-family="Impact" font-size="150" fill="__MAIN__" text-anchor="middle">33</text>`,
+
+        // --- CATEGORÍA 2: TAPAS DE LATA (10-19) ---
+        // 10: Tapa de lata cenital detallada
+        `<rect width="400" height="400" fill="__BG__"/>
+         <circle cx="200" cy="200" r="160" fill="none" stroke="__MAIN__" stroke-width="15"/>
+         <circle cx="200" cy="200" r="145" fill="none" stroke="__SEC__" stroke-width="4" opacity="0.5"/>
+         <path d="M 200 140 Q 240 140 240 180 L 240 260 Q 240 300 200 300 Q 160 300 160 260 L 160 180 Q 160 140 200 140 Z" fill="none" stroke="__MAIN__" stroke-width="8"/>
+         <circle cx="200" cy="270" r="10" fill="__MAIN__"/>
+         <path d="M 175 160 L 225 160 A 25 25 0 0 1 225 210 L 175 210 A 25 25 0 0 1 175 160 Z" fill="__MAIN__" opacity="0.3"/>
+         <text x="200" y="240" font-family="Arial Black" font-size="40" fill="__TEXT__" text-anchor="middle">33</text>`,
+
+        // 11: Anilla de lata (Pull Tab) aislada Premium
+        `<rect width="400" height="400" fill="__BG__"/>
+         <path d="M 160 100 L 240 100 Q 280 100 280 140 L 280 300 Q 280 340 240 340 L 160 340 Q 120 340 120 300 L 120 140 Q 120 100 160 100 Z" fill="none" stroke="__MAIN__" stroke-width="15"/>
+         <circle cx="200" cy="290" r="15" fill="__MAIN__"/>
+         <rect x="150" y="130" width="100" height="80" rx="40" fill="none" stroke="__MAIN__" stroke-width="8"/>
+         <text x="200" y="255" font-family="Impact" font-size="80" fill="__TEXT__" text-anchor="middle">33</text>`,
+
+        // 12: Tapa de lata con apertura grabada
+        `<rect width="400" height="400" fill="__BG__"/>
+         <circle cx="200" cy="200" r="160" fill="__SEC__" opacity="0.1" stroke="__MAIN__" stroke-width="4"/>
+         <path d="M 200 100 A 70 90 0 0 1 200 280 A 70 90 0 0 1 200 100" fill="none" stroke="__MAIN__" stroke-width="2" stroke-dasharray="10 5"/>
+         <path d="M 180 120 Q 200 110 220 120 L 210 200 Q 200 210 190 200 Z" fill="__MAIN__"/>
+         <text x="200" y="340" font-family="Arial Black" font-size="40" fill="__TEXT__" text-anchor="middle">PUNTO 33</text>`,
+
+        // 13: Lata de perfil con tapa brillante
+        `<rect width="400" height="400" fill="__BG__"/>
+         <path d="M 120 100 L 280 100 L 280 350 L 120 350 Z" fill="none" stroke="__MAIN__" stroke-width="10"/>
+         <ellipse cx="200" cy="100" rx="80" ry="25" fill="__SEC__" stroke="__MAIN__" stroke-width="8"/>
+         <path d="M 180 100 L 220 100" stroke="__BG__" stroke-width="10" stroke-linecap="round"/>
+         <text x="200" y="250" font-family="Impact" font-size="100" fill="__MAIN__" text-anchor="middle">33</text>`,
+
+        // 14: Tapa de lata con diseño radial
+        `<rect width="400" height="400" fill="__BG__"/>
+         <circle cx="200" cy="200" r="160" fill="none" stroke="__MAIN__" stroke-width="12"/>
+         <g opacity="0.2">
+            <circle cx="200" cy="200" r="140" fill="none" stroke="__MAIN__" stroke-width="1"/>
+            <circle cx="200" cy="200" r="120" fill="none" stroke="__MAIN__" stroke-width="1"/>
+            <circle cx="200" cy="200" r="100" fill="none" stroke="__MAIN__" stroke-width="1"/>
+         </g>
+         <path d="M 170 120 L 230 120 L 220 180 L 180 180 Z" fill="__MAIN__"/>
+         <text x="200" y="280" font-family="Arial Black" font-size="100" fill="__TEXT__" text-anchor="middle">33</text>`,
+
+        // 15: Anilla doble (Brindis de latas)
+        `<rect width="400" height="400" fill="__BG__"/>
+         <path d="M 150 150 Q 180 100 210 150 L 210 300 Q 180 350 150 300 Z" fill="none" stroke="__MAIN__" stroke-width="10"/>
+         <path d="M 250 150 Q 220 100 190 150 L 190 300 Q 220 350 250 300 Z" fill="none" stroke="__SEC__" stroke-width="10"/>
+         <text x="200" y="240" font-family="Impact" font-size="60" fill="__TEXT__" text-anchor="middle">33</text>`,
+
+        // 16: Tapa de lata con "Click" de apertura
+        `<rect width="400" height="400" fill="__BG__"/>
+         <circle cx="200" cy="200" r="160" fill="none" stroke="__MAIN__" stroke-width="10"/>
+         <path d="M 200 130 L 250 80 M 150 80 L 200 130" stroke="__HL__" stroke-width="6" stroke-linecap="round"/>
+         <circle cx="200" cy="200" r="40" fill="__MAIN__"/>
+         <text x="200" y="215" font-family="Arial" font-size="40" font-weight="bold" fill="__BG__" text-anchor="middle">33</text>`,
+
+        // 17: Lata Seltzer (Delgada) con anilla Neón
+        `<rect width="400" height="400" fill="__BG__"/>
+         <rect x="160" y="80" width="80" height="280" rx="10" fill="none" stroke="__MAIN__" stroke-width="8"/>
+         <path d="M 160 110 L 240 110" stroke="__MAIN__" stroke-width="8"/>
+         <circle cx="200" cy="95" r="8" fill="__SEC__"/>
+         <text x="200" y="240" font-family="Impact" font-size="60" fill="__MAIN__" text-anchor="middle" transform="rotate(-90 200 240)">PUNTO 33</text>`,
+
+        // 18: Tapa de lata minimalista industrial
+        `<rect width="400" height="400" fill="__BG__"/>
+         <circle cx="200" cy="200" r="160" fill="__SEC__" opacity="0.05"/>
+         <path d="M 150 150 L 250 150 L 250 250 L 150 250 Z" fill="none" stroke="__MAIN__" stroke-width="15"/>
+         <circle cx="200" cy="200" r="20" fill="__MAIN__"/>
+         <text x="200" y="320" font-family="Arial Black" font-size="50" fill="__TEXT__" text-anchor="middle">P.33</text>`,
+
+        // 19: Anilla de lata con gota de rocío
+        `<rect width="400" height="400" fill="__BG__"/>
+         <path d="M 180 100 L 220 100 L 220 300 L 180 300 Z" fill="__MAIN__"/>
+         <circle cx="200" cy="150" r="40" fill="none" stroke="__MAIN__" stroke-width="10"/>
+         <circle cx="230" cy="220" r="10" fill="__HL__" opacity="0.6"/>
+         <text x="200" y="360" font-family="Impact" font-size="60" fill="__TEXT__" text-anchor="middle">33</text>`,
+
+        // --- CATEGORÍA 3: BOTELLAS & CRISTAL HD (20-29) ---
+        // 20: Botella de cerveza cuello largo HD
+        `<rect width="400" height="400" fill="__BG__"/>
+         <path d="M 185 60 L 215 60 L 215 150 Q 260 180 260 220 L 260 340 A 10 10 0 0 1 250 350 L 150 350 A 10 10 0 0 1 140 340 L 140 220 Q 140 180 185 150 Z" fill="none" stroke="__MAIN__" stroke-width="8"/>
+         <path d="M 150 230 L 250 230 L 250 320 L 150 320 Z" fill="__SEC__" opacity="0.2"/>
+         <path d="M 155 180 Q 155 100 180 80" fill="none" stroke="__HL__" stroke-width="4" stroke-linecap="round" opacity="0.5"/>
+         <text x="200" y="290" font-family="Arial Black" font-size="45" fill="__MAIN__" text-anchor="middle">33</text>`,
+
+        // 21: Vaso de trago largo con rodaja de limón detallada
+        `<rect width="400" height="400" fill="__BG__"/>
+         <path d="M 140 100 L 155 340 L 245 340 L 260 100" fill="none" stroke="__MAIN__" stroke-width="10" stroke-linecap="round"/>
+         <circle cx="260" cy="110" r="35" fill="none" stroke="__MAIN__" stroke-width="6"/>
+         <line x1="260" y1="75" x2="260" y2="145" stroke="__MAIN__" stroke-width="2"/>
+         <line x1="225" y1="110" x2="295" y2="110" stroke="__MAIN__" stroke-width="2"/>
+         <rect x="170" y="180" width="40" height="40" rx="5" fill="__SEC__" opacity="0.3" transform="rotate(20 190 200)"/>
+         <text x="200" y="260" font-family="Impact" font-size="70" fill="__TEXT__" text-anchor="middle">33</text>`,
+
+        // 22: Botella de Champagne con corcho volando
+        `<rect width="400" height="400" fill="__BG__"/>
+         <path d="M 175 120 L 225 120 L 230 180 Q 270 200 270 250 L 270 350 L 130 350 L 130 250 Q 130 200 170 180 Z" fill="none" stroke="__MAIN__" stroke-width="8"/>
+         <rect x="185" y="40" width="30" height="40" rx="5" fill="__MAIN__"/>
+         <path d="M 160 80 Q 200 20 240 80" fill="none" stroke="__HL__" stroke-width="4" stroke-dasharray="5 5"/>
+         <text x="200" y="280" font-family="Georgia" font-size="50" font-weight="bold" fill="__TEXT__" text-anchor="middle">33</text>`,
+
+        // 23: Vaso Tumbler (Whisky) con cubo de hielo tallado
+        `<rect width="400" height="400" fill="__BG__"/>
+         <path d="M 120 150 L 140 330 L 260 330 L 280 150" fill="none" stroke="__MAIN__" stroke-width="12"/>
+         <rect x="160" y="230" width="80" height="80" rx="10" fill="__SEC__" opacity="0.2" stroke="__MAIN__" stroke-width="2"/>
+         <line x1="160" y1="230" x2="240" y2="310" stroke="__MAIN__" stroke-width="1" opacity="0.3"/>
+         <text x="200" y="120" font-family="Impact" font-size="70" fill="__MAIN__" text-anchor="middle">P.33</text>`,
+
+        // 24: Botella de Gin Premium (Cuadrada)
+        `<rect width="400" height="400" fill="__BG__"/>
+         <path d="M 180 80 L 220 80 L 220 140 L 270 140 L 270 340 L 130 340 L 130 140 L 180 140 Z" fill="none" stroke="__MAIN__" stroke-width="10"/>
+         <rect x="150" y="180" width="100" height="120" fill="__SEC__" opacity="0.1"/>
+         <circle cx="200" cy="240" r="35" fill="__MAIN__"/>
+         <text x="200" y="255" font-family="Arial" font-size="40" font-weight="bold" fill="__BG__" text-anchor="middle">33</text>`,
+
+        // 25: Copa de Cognac (Balón) con reflejo
+        `<rect width="400" height="400" fill="__BG__"/>
+         <path d="M 120 180 A 80 80 0 1 0 280 180 Q 280 100 200 100 Q 120 100 120 180" fill="none" stroke="__MAIN__" stroke-width="8"/>
+         <line x1="200" y1="260" x2="200" y2="340" stroke="__MAIN__" stroke-width="8"/>
+         <line x1="150" y1="340" x2="250" y2="340" stroke="__MAIN__" stroke-width="8" stroke-linecap="round"/>
+         <path d="M 140 180 Q 200 240 260 180" fill="none" stroke="__HL__" stroke-width="10" opacity="0.4"/>
+         <text x="200" y="195" font-family="Impact" font-size="70" fill="__MAIN__" text-anchor="middle">33</text>`,
+
+        // 26: Decantador con cuello curvo detallado
+        `<rect width="400" height="400" fill="__BG__"/>
+         <path d="M 190 60 Q 210 60 210 120 Q 210 180 300 220 Q 320 280 280 340 L 120 340 Q 80 280 100 220 Q 190 180 190 120 Z" fill="none" stroke="__MAIN__" stroke-width="8"/>
+         <path d="M 130 280 Q 200 260 270 280" fill="none" stroke="__HL__" stroke-width="4" opacity="0.5"/>
+         <text x="200" y="300" font-family="Georgia" font-size="50" font-weight="bold" fill="__TEXT__" text-anchor="middle">33</text>`,
+
+        // 27: Botella de Vodka (Minimalista Frost)
+        `<rect width="400" height="400" fill="__BG__"/>
+         <rect x="150" y="80" width="100" height="270" rx="10" fill="none" stroke="__MAIN__" stroke-width="10"/>
+         <rect x="150" y="120" width="100" height="180" fill="__SEC__" opacity="0.1"/>
+         <line x1="165" y1="80" x2="165" y2="350" stroke="__HL__" stroke-width="4" opacity="0.4"/>
+         <text x="200" y="235" font-family="Arial Black" font-size="80" fill="__MAIN__" text-anchor="middle">33</text>`,
+
+        // 28: Copa de Brandy con mano (Silueta)
+        `<rect width="400" height="400" fill="__BG__"/>
+         <path d="M 120 200 Q 120 300 200 300 Q 280 300 280 200 Q 280 120 200 120 Q 120 120 120 200" fill="none" stroke="__MAIN__" stroke-width="8"/>
+         <path d="M 80 280 Q 120 320 200 320 Q 280 320 320 280" fill="none" stroke="__SEC__" stroke-width="15" stroke-linecap="round" opacity="0.3"/>
+         <text x="200" y="235" font-family="Impact" font-size="100" fill="__MAIN__" text-anchor="middle">33</text>`,
+
+        // 29: Elixir (Botella de Poción / Licor artesanal)
+        `<rect width="400" height="400" fill="__BG__"/>
+         <circle cx="200" cy="240" r="100" fill="none" stroke="__MAIN__" stroke-width="10"/>
+         <rect x="180" y="80" width="40" height="80" fill="none" stroke="__MAIN__" stroke-width="10"/>
+         <path d="M 150 240 Q 200 290 250 240" fill="none" stroke="__HL__" stroke-width="8" opacity="0.5"/>
+         <text x="200" y="240" font-family="Georgia" font-size="60" font-weight="bold" fill="__TEXT__" text-anchor="middle">P.33</text>`
     ];
 
     const grid = document.getElementById('grid-container');
@@ -137,20 +307,19 @@
             card.className = 'logo-card';
             card.innerHTML = `
                 <div class="preview" id="prev-${i}"></div>
-                <h3 style="margin: 0 0 1rem 0; font-size: 1.1rem; color: #fff;">Logo Concepto #${i + 1}</h3>
+                <h3 style="margin: 0 0 1rem 0; font-size: 1.1rem; color: #fff;">Logo HD #${i + 1}</h3>
                 <div class="controls">
                     <div class="row">
                         <select id="color-${i}" onchange="updateSvg(${i})" style="flex:1">
-                            <option value="original">🎨 Clásico (Verde)</option>
+                            <option value="original">🎨 Esmeralda</option>
                             <option value="dark">🌙 Dark Mode</option>
-                            <option value="gold">🏆 Dorado Premium</option>
-                            <option value="neon">🌈 Neón Night</option>
-                            <option value="mono">🖤 Blanco y Negro</option>
+                            <option value="gold">🏆 Gold Edition</option>
+                            <option value="neon">🌈 Cyber Neon</option>
+                            <option value="mono">🖤 Sello B&N</option>
                         </select>
                         <select id="scale-${i}">
-                            <option value="2">HD (800px)</option>
-                            <option value="4">Full HD (1600px)</option>
-                            <option value="8">4K (3200px)</option>
+                            <option value="4">HD (1600px)</option>
+                            <option value="8">4K Ultra (3200px)</option>
                         </select>
                     </div>
                     <button onclick="downloadPng(${i})">⬇️ DESCARGAR PNG</button>
@@ -194,7 +363,7 @@
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
             
             const link = document.createElement('a');
-            link.download = `Punto33_Logo_${index+1}_${paletteName}_${canvas.width}px.png`;
+            link.download = `Punto33_UltraHD_Logo_${index+1}_${paletteName}.png`;
             link.href = canvas.toDataURL('image/png');
             link.click();
             URL.revokeObjectURL(url);
